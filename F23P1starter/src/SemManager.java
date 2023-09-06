@@ -62,15 +62,17 @@ public class SemManager{
                         String dateField = lines.nextLine().replaceAll("\\s+", " ").trim();
                         String date = dateField.split("\\s")[0];
                         int length = Integer.parseInt(dateField.split("\\s")[1]);
-                        int x = Integer.parseInt(dateField.split("\\s")[2]);
-                        int y = Integer.parseInt(dateField.split("\\s")[3]);
+                        short x = (short)Integer.parseInt(dateField.split("\\s")[2]);
+                        short y = (short)Integer.parseInt(dateField.split("\\s")[3]);
                         int cost = Integer.parseInt(dateField.split("\\s")[4]);
                         String keywords = lines.nextLine().replaceAll("\\s+", " ").trim().replaceAll("\\s", ",\\s");
                         String description = lines.nextLine().replaceAll("\\s+", " ").trim();
-                        insert(id, title, date, length, x, y, cost, keywords, description);
+                        Seminar sem = new Seminar(id, title, dateField, date, length, x, y, cost, keywords, description);
+                
+                        hashTable.insert(sem);
                         break;
                     case "search":// Found a search command
-                        search();
+                        hashTable.search(sem);
                         break;
                     case "delete":// Found a delete command
                         delete();

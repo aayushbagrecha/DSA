@@ -1,4 +1,4 @@
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class HashTable {
 
@@ -14,52 +14,56 @@ public class HashTable {
         }
 
         // Hash function 1
-        private int hash1(String key) {
-            return key.hashCode() % capacity;
+        private int hash1(int key) {
+            return key % capacity;
         }
 
         // Hash function 2 for double hashing
-        private int hash2(String key) {
-            return 7 - (key.hashCode() % 7);
+        private int hash2(int key) {
+            return (((key/capacity)%(capacity/2))*2)+1;//put 2nd formula (done)
         }
 
         // Insert a key-value pair into the hash table
-        public void insert(Seminar record) {
+        public boolean insert(Seminar record) {
             if (size >= capacity * 0.5) {
                 expand(); // Expand the hash table if the load factor is too high
             }
 
             int index = hash1(record.id);
-            int step = hash2(key);
-
+            int step = hash2(record.id);
+       
             while (table[index] != null) {
                 index = (index + step) % capacity;
             }
-
-            table[index] = key;
+// add condition for duplicacy
+            table[index] = record;
             size++;
+            return true;
         }
 
         // Delete a key from the hash table
-        public void delete(String key) {
-            int index = search(key);
+        public boolean delete(int id) {
+            int index = search(id);
 
             if (index != -1) {
                 table[index] = null;
                 size--;
-                System.out.println("Deleted key: " + key);
+                System.out.println("Deleted key: " + id);
+                return true;
             } else {
-                System.out.println("Key not found: " + key);
+             
+                System.out.println("Key not found: " + id);
+                return false;
             }
         }
 
         // Search for a key in the hash table
-        public int search(String key) {
-            int index = hash1(key);
-            int step = hash2(key);
+        public int search(int record) {
+            int index = hash1(record);
+            int step = hash2(record);
 
             while (table[index] != null) {
-                if (table[index].equals(key)) {
+                if (table[index].equals(record)) {
                     return index;
                 }
                 index = (index + step) % capacity;
@@ -81,19 +85,19 @@ public class HashTable {
         // Expand the hash table and rehash all elements
         private void expand() {
             int newCapacity = capacity * 2;
-            String[] newTable = new String[newCapacity];
-            Arrays.fill(newTable, null);
+            Seminar[] newTable = new Seminar[newCapacity];
+            //Arrays.fill(newTable, null);
 
-            for (String key : table) {
-                if (key != null) {
-                    int index = key.hashCode() % newCapacity;
-                    int step = hash2(key);
+            for (Seminar rec : table) {
+                if (rec != null) {
+                    int index = rec.id % newCapacity;
+                    int step = hash2(rec.id);
 
                     while (newTable[index] != null) {
                         index = (index + step) % newCapacity;
                     }
 
-                    newTable[index] = key;
+                    newTable[index] = rec;
                 }
             }
 

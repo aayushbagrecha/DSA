@@ -24,8 +24,18 @@ public class Seminar implements Serializable {
     // ----------------------------------------------------------
     /**
      * Dummy seminar constructor
+     * @param description 
+     * @param keywords2 
+     * @param cost2 
+     * @param y2 
+     * @param x2 
+     * @param length2 
+     * @param date2 
+     * @param dateField 
+     * @param title2 
+     * @param id2 
      */
-    public Seminar() {
+    public Seminar(int id2, String title2, String dateField, String date2, int length2, short x2, short y2, int cost2, String keywords2, String description) {
         // Nothing here
     }
 
