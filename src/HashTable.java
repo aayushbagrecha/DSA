@@ -10,13 +10,13 @@ public class HashTable {
     private PrintWriter writer;
 
     public HashTable(
-            int MEMORY_POOL_SIZE,
-            int INITIAL_CAPACITY,
-            PrintWriter writer) {
-        table = new Record[INITIAL_CAPACITY];
+        int memoryPoolSize,
+        int initialCapacity,
+        PrintWriter writer) {
+        table = new Record[initialCapacity];
         size = 0;
-        memoryPoolSize = MEMORY_POOL_SIZE;
-        freeBlocks = new int[MEMORY_POOL_SIZE];
+        this.memoryPoolSize = memoryPoolSize;
+        freeBlocks = new int[memoryPoolSize];
 
         for (int i = 0; i < memoryPoolSize; i++) {
             freeBlocks[i] = -1;
@@ -25,35 +25,38 @@ public class HashTable {
         this.writer = writer;
     }
 
+
     public boolean insert(Record record) {
-        if (search(record.ID, false) != null) {
-            // Record with the same ID already exists
+        if (search(record.Id, false) != null) {
+            // Record with the same Id already exists
             return false;
         }
 
         if (size >= table.length * LOAD_FACTOR_THRESHOLD) {
             expandTable();
         }
-        int index = findIndex(record.ID);
+        int index = findIndex(record.Id);
         table[index] = record;
         size++;
         return true;
     }
 
-    public Record search(int ID, boolean searchMode) {
-        int index = findIndex(ID);
-        if (table[index] != null && table[index].ID == ID
-                && !table[index].deleted) {
+
+    public Record search(int Id, boolean searchMode) {
+        int index = findIndex(Id);
+        if (table[index] != null && table[index].Id == Id
+            && !table[index].deleted) {
             return table[index];
         }
         if (searchMode == true)
-            writer.println("Search FAILED -- There is no record with ID " + ID);
+            writer.println("Search FAILED -- There is no record with ID " + Id);
         return null;
     }
 
-    public boolean delete(int ID) {
-        int index = findIndex(ID);
-        if (table[index] != null && table[index].ID == ID) {
+
+    public boolean delete(int Id) {
+        int index = findIndex(Id);
+        if (table[index] != null && table[index].Id == Id) {
             table[index].deleted = true; // Mark the record as deleted with a
                                          // tombstone
             size--;
@@ -61,6 +64,7 @@ public class HashTable {
         }
         return false;
     }
+
 
     private void expandTable() {
         Record[] oldTable = table;
@@ -76,16 +80,18 @@ public class HashTable {
         }
     }
 
-    private int findIndex(int ID) {
-        int index = ID % table.length; // 10 % 4
-        int step = (((ID / table.length) % (table.length / 2)) * 2) + 1;
 
-        while (table[index] != null && table[index].ID != ID) {
+    private int findIndex(int Id) {
+        int index = Id % table.length; // 10 % 4
+        int step = (((Id / table.length) % (table.length / 2)) * 2) + 1;
+
+        while (table[index] != null && table[index].Id != Id) {
             index = (index + step) % table.length; // 4 % 4 = 0, 2 % 4
-            // index = (((ID / table.length) % (table.length / 2)) * 2) + 1;
+            // index = (((Id / table.length) % (table.length / 2)) * 2) + 1;
         }
         return index;
     }
+
 
     public void printHashTable() {
 
@@ -96,8 +102,9 @@ public class HashTable {
             if (record != null) {
                 if (record.deleted) {
                     writer.println((i + ": TOMBSTONE"));
-                } else {
-                    writer.println((i + ": " + record.ID));
+                }
+                else {
+                    writer.println((i + ": " + record.Id));
                     count++;
                 }
             }
@@ -106,6 +113,7 @@ public class HashTable {
         writer.println("total records: " + count);
 
     }
+
 
     public void printMemoryBlocks() {
         // writer.println("FreeBlock List:");

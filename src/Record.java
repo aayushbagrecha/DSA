@@ -1,5 +1,5 @@
 public class Record {
-    int ID;
+    int Id;
     String Title;
     String Date;
     int Length, Cost;
@@ -9,7 +9,7 @@ public class Record {
     boolean deleted;
 
     public Record(
-        int ID,
+        int Id,
         String Title,
         String Date,
         int Length,
@@ -18,7 +18,7 @@ public class Record {
         int Cost,
         String Description,
         String Keywords) {
-        this.ID = ID;
+        this.Id = Id;
         this.Title = Title;
         this.Date = Date;
         this.Length = Length;
