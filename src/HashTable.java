@@ -1,5 +1,4 @@
 import java.io.PrintWriter;
-import java.util.*;
 
 public class HashTable {
     private static final double LOAD_FACTOR_THRESHOLD = 0.5;
