@@ -35,29 +35,52 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * The Main class in Java reads commands from a file, performs operations on a
+ * hash table based on the
+ * commands, and writes the results to an output file.
+ */
 public class Main {
-
     /**
-     * @param args
+     * The main function takes command line arguments for memory pool size,
+     * initial capacity, and
+     * filename, and then calls the beginParsing function with those arguments.
      */
-
     public static void main(String[] args) {
         int memoryPoolSize = Integer.parseInt(args[0]);
         int initialCapacity = Integer.parseInt(args[1]);
         String filename = args[2];// Pass the function a full filepath
 
-        // String filename =
-        // "/Users/yashshrikant/Documents/Courses/Intermediate
-        // DSA/Scanner/src/input.txt";
+        // String filename = "input.txt";
         // int memoryPoolSize = 64;
         // int initialCapacity = 4;
 
-        beginParsing(filename, memoryPoolSize, initialCapacity);// call the
-                                                                // parsing
-                                                                // function
+        beginParsing(filename, memoryPoolSize, initialCapacity); // call the
+                                                                 // parsing
+                                                                 // function
     }
 
 
+    /**
+     * The function `beginParsing` reads commands from a file, performs
+     * operations on a hash table
+     * based on the commands, and writes the results to an output file.
+     * 
+     * @param filename
+     *            The filename parameter is the name of the file that contains
+     *            the commands to be
+     *            parsed.
+     * @param memoryPoolSize
+     *            The `memoryPoolSize` parameter represents the size of the
+     *            memory pool that
+     *            will be used by the `HashTable` object. It determines the
+     *            maximum number of records that can be
+     *            stored in the hash table.
+     * @param initialCapacity
+     *            The initial capacity is the initial size of the hash table. It
+     *            determines
+     *            the number of buckets in the hash table.
+     */
     public static void beginParsing(
         String filename,
         int memoryPoolSize,
@@ -69,12 +92,10 @@ public class Main {
 
             HashTable ht = new HashTable(memoryPoolSize, initialCapacity,
                 writer);
-            Scanner lines = new Scanner(new File(filename));// Create our new
-                                                            // scanner
-            while (lines.hasNext()) {// While the scanner has information to
-                                     // read
+            Scanner lines = new Scanner(new File(filename));
+            while (lines.hasNext()) { // While the scanner has information to
+                                      // read
                 String cmd = lines.nextLine().replaceAll("\\s+", " ").trim();
-                ;// Read the next term
 
                 String verb = cmd.split("\\s")[0];
 
@@ -118,16 +139,16 @@ public class Main {
                         id = Integer.parseInt(cmd.split(" ")[1]);
                         record = ht.search(id, true);
                         if (record != null) {
-                            writer.println("Found record with ID " + record.Id
+                            writer.println("Found record with ID " + record.id
                                 + ":");
-                            writer.println("ID:" + record.Id + ", Title: "
-                                + record.Title);
-                            writer.println("Date: " + record.Date + ", Length: "
-                                + record.Length + ", X: " + record.X + ", Y: "
-                                + record.Y + ", Cost: " + record.Cost);
+                            writer.println("ID:" + record.id + ", Title: "
+                                + record.title);
+                            writer.println("Date: " + record.date + ", Length: "
+                                + record.length + ", X: " + record.x + ", Y: "
+                                + record.y + ", Cost: " + record.cost);
                             writer.println("Description: "
-                                + record.Description);
-                            writer.println("Keywords: " + record.Keywords);
+                                + record.description);
+                            writer.println("Keywords: " + record.keywords);
                         }
                         break;
                     case "delete":// Found a delete command
@@ -153,7 +174,7 @@ public class Main {
                         else {
                             ht.printHashTable();
                         }
-                    default:// Found an unrecognized command
+                    default: // Found an unrecognized command
                         break;
                 }
             }
