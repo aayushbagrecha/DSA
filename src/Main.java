@@ -140,8 +140,7 @@ public class Main {
 }
 
 /*
- * - implement print (for free blocks)
- * - remove array list implementation for freeblocks from hashtable
+ * - implement handle class in records
  * - code refactoring and documentation
  * - mutation testing
  * - Junit testing

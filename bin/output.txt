@@ -37,8 +37,6 @@ HashTable:
 3: 3
 5: 10
 total records: 4
-FreeBlock List:
-There are no freeblocks in the memory pool
 Record with ID 2 successfully deleted from the database
 Search FAILED -- There is no record with ID 2
 HashTable:
@@ -47,8 +45,6 @@ HashTable:
 3: 3
 5: 10
 total records: 3
-FreeBlock List:
-There are no freeblocks in the memory pool
 Delete FAILED -- There is no record with ID 6
 Search FAILED -- There is no record with ID 2
 Successfully inserted record with ID 2
@@ -63,5 +59,3 @@ HashTable:
 3: 3
 5: TOMBSTONE
 total records: 3
-FreeBlock List:
-There are no freeblocks in the memory pool

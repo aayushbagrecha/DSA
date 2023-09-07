@@ -103,16 +103,16 @@ public class HashTable {
     }
 
     public void printMemoryBlocks() {
-        writer.println("FreeBlock List:");
+        // writer.println("FreeBlock List:");
 
-        for (int block : freeBlocks) {
+        // for (int block : freeBlocks) {
 
-            if (block == -1)
-                continue;
-            else
-                writer.println(block + " ");
-        }
+        // if (block == -1)
+        // continue;
+        // else
+        // writer.println(block + " ");
+        // }
 
-        writer.println("There are no freeblocks in the memory pool");
+        // writer.println("There are no freeblocks in the memory pool");
     }
 }
