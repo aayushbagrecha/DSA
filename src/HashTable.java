@@ -11,9 +11,9 @@ public class HashTable {
     private PrintWriter writer;
 
     public HashTable(
-        int MEMORY_POOL_SIZE,
-        int INITIAL_CAPACITY,
-        PrintWriter writer) {
+            int MEMORY_POOL_SIZE,
+            int INITIAL_CAPACITY,
+            PrintWriter writer) {
         table = new Record[INITIAL_CAPACITY];
         size = 0;
         memoryPoolSize = MEMORY_POOL_SIZE;
@@ -26,9 +26,8 @@ public class HashTable {
         this.writer = writer;
     }
 
-
     public boolean insert(Record record) {
-        if (search(record.ID) != null) {
+        if (search(record.ID, false) != null) {
             // Record with the same ID already exists
             return false;
         }
@@ -42,17 +41,16 @@ public class HashTable {
         return true;
     }
 
-
-    public Record search(int ID) {
+    public Record search(int ID, boolean searchMode) {
         int index = findIndex(ID);
         if (table[index] != null && table[index].ID == ID
-            && !table[index].deleted) {
+                && !table[index].deleted) {
             return table[index];
         }
-        writer.println("Search FAILED -- There is no record with ID " + ID);
+        if (searchMode == true)
+            writer.println("Search FAILED -- There is no record with ID " + ID);
         return null;
     }
-
 
     public boolean delete(int ID) {
         int index = findIndex(ID);
@@ -64,7 +62,6 @@ public class HashTable {
         }
         return false;
     }
-
 
     private void expandTable() {
         Record[] oldTable = table;
@@ -80,7 +77,6 @@ public class HashTable {
         }
     }
 
-
     private int findIndex(int ID) {
         int index = ID % table.length; // 10 % 4
         int step = (((ID / table.length) % (table.length / 2)) * 2) + 1;
@@ -92,7 +88,6 @@ public class HashTable {
         return index;
     }
 
-
     public void printHashTable() {
 
         writer.println("HashTable:");
@@ -102,8 +97,7 @@ public class HashTable {
             if (record != null) {
                 if (record.deleted) {
                     writer.println((i + ": TOMBSTONE"));
-                }
-                else {
+                } else {
                     writer.println((i + ": " + record.ID));
                     count++;
                 }
@@ -113,7 +107,6 @@ public class HashTable {
         writer.println("total records: " + count);
 
     }
-
 
     public void printMemoryBlocks() {
         // writer.println("FreeBlock List:");

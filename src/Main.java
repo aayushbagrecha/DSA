@@ -42,35 +42,30 @@ public class Main {
      */
 
     public static void main(String[] args) {
-        int MEMORY_POOL_SIZE = Integer.parseInt(args[0]);
-        int INITIAL_CAPACITY = Integer.parseInt(args[1]);
-        String filename = args[2];// Pass the function a full filepath
+        // int memoryPoolSize = Integer.parseInt(args[0]);
+        // int initialCapacity = Integer.parseInt(args[1]);
+        // String filename = args[2];// Pass the function a full filepath
 
-        // System.out.println(MEMORY_POOL_SIZE + INITIAL_CAPACITY + filename);
+        String filename = "/Users/yashshrikant/Documents/Courses/Intermediate DSA/Scanner/src/input.txt";
+        int memoryPoolSize = 64;
+        int initialCapacity = 4;
 
-        // String filename =
-        // "/Users/yashshrikant/Documents/Courses/Intermediate
-        // DSA/Scanner/src/input.txt";
-        // int MEMORY_POOL_SIZE = 64;
-        // int INITIAL_CAPACITY = 4;
-
-        beginParsing(filename, MEMORY_POOL_SIZE, INITIAL_CAPACITY);// call the
-                                                                   // parsing
-                                                                   // function
+        beginParsing(filename, memoryPoolSize, initialCapacity);// call the
+                                                                // parsing
+                                                                // function
     }
 
-
     public static void beginParsing(
-        String filename,
-        int MEMORY_POOL_SIZE,
-        int INITIAL_CAPACITY) {
+            String filename,
+            int memoryPoolSize,
+            int initialCapacity) {
         try {
 
             String outputFile = "output.txt";
             PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
 
-            HashTable ht = new HashTable(MEMORY_POOL_SIZE, INITIAL_CAPACITY,
-                writer);
+            HashTable ht = new HashTable(memoryPoolSize, initialCapacity,
+                    writer);
             Scanner lines = new Scanner(new File(filename));// Create our new
                                                             // scanner
             while (lines.hasNext()) {// While the scanner has information to
@@ -85,50 +80,49 @@ public class Main {
                         int id = Integer.parseInt(cmd.split(" ")[1]);
                         String title = lines.nextLine();
                         String dateField = lines.nextLine().replaceAll("\\s+",
-                            " ").trim();
+                                " ").trim();
                         String date = dateField.split(" ")[0];
                         int length = Integer.parseInt(dateField.split(" ")[1]);
                         short x = Short.parseShort(dateField.split(" ")[2]);
                         short y = Short.parseShort(dateField.split(" ")[3]);
                         int cost = Integer.parseInt(dateField.split(" ")[4]);
                         String keywords = lines.nextLine().replaceAll("\\s+",
-                            " ").trim().replaceAll(" ", ", ");
+                                " ").trim().replaceAll(" ", ", ");
                         String description = lines.nextLine().replaceAll("\\s+",
-                            " ").trim();
+                                " ").trim();
                         Record record = new Record(id, title, date, length, x,
-                            y, cost, description, keywords);
+                                y, cost, description, keywords);
                         boolean inserted = ht.insert(record);
                         if (inserted == true) {
                             writer.println(
-                                "Successfully inserted record with ID " + id);
+                                    "Successfully inserted record with ID " + id);
                             writer.println("ID:" + id + ", Title: " + title);
                             writer.println("Date: " + date + ", Length: "
-                                + length + ", X: " + x + ", Y: " + y
-                                + ", Cost: " + cost);
+                                    + length + ", X: " + x + ", Y: " + y
+                                    + ", Cost: " + cost);
                             writer.println("Description: " + description);
                             writer.println("Keywords: " + keywords);
                             // writer.println("Size: " +
                             // record.calculateSize());
-                        }
-                        else {
+                        } else {
                             writer.println(
-                                "Insert FAILED - There is already a record with ID "
-                                    + id);
+                                    "Insert FAILED - There is already a record with ID "
+                                            + id);
                         }
                         break;
                     case "search":// Found an search command
                         id = Integer.parseInt(cmd.split(" ")[1]);
-                        record = ht.search(id);
+                        record = ht.search(id, true);
                         if (record != null) {
                             writer.println("Found record with ID " + record.ID
-                                + ":");
+                                    + ":");
                             writer.println("ID:" + record.ID + ", Title: "
-                                + record.Title);
+                                    + record.Title);
                             writer.println("Date: " + record.Date + ", Length: "
-                                + record.Length + ", X: " + record.X + ", Y: "
-                                + record.Y + ", Cost: " + record.Cost);
+                                    + record.Length + ", X: " + record.X + ", Y: "
+                                    + record.Y + ", Cost: " + record.Cost);
                             writer.println("Description: "
-                                + record.Description);
+                                    + record.Description);
                             writer.println("Keywords: " + record.Keywords);
                         }
                         break;
@@ -137,22 +131,20 @@ public class Main {
                         boolean deletedStatus = ht.delete(id);
                         if (deletedStatus == true) {
                             writer.println("Record with ID " + id
-                                + " successfully deleted from the database");
-                        }
-                        else {
+                                    + " successfully deleted from the database");
+                        } else {
                             writer.println(
-                                "Delete FAILED -- There is no record with ID "
-                                    + id);
+                                    "Delete FAILED -- There is no record with ID "
+                                            + id);
                         }
                         break;
                     case "print":// Found a print command
                         String printCondition = cmd.split(" ")[1].replaceAll(
-                            "\\s+", " ").trim();
+                                "\\s+", " ").trim();
 
                         if (printCondition.equals("blocks")) {
                             ht.printMemoryBlocks();
-                        }
-                        else {
+                        } else {
                             ht.printHashTable();
                         }
                     default:// Found an unrecognized command
@@ -161,8 +153,7 @@ public class Main {
             }
 
             writer.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -170,8 +161,11 @@ public class Main {
 }
 
 /*
- * - implement handle class in records.java
  * - code refactoring and documentation
  * - mutation testing
  * - Junit testing
+ * - implement handle class in records.java
+ * - implement memory manager
+ * - print out sizes after each insert command
+ * - implement freesize block
  */
