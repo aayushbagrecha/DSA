@@ -8,8 +8,16 @@ public class Record {
     int Size;
     boolean deleted;
 
-    public Record(int ID, String Title, String Date, int Length, short X, short Y, int Cost, String Description,
-            String Keywords) {
+    public Record(
+        int ID,
+        String Title,
+        String Date,
+        int Length,
+        short X,
+        short Y,
+        int Cost,
+        String Description,
+        String Keywords) {
         this.ID = ID;
         this.Title = Title;
         this.Date = Date;
@@ -22,6 +30,7 @@ public class Record {
         this.Size = calculateSize();
         this.deleted = false;
     }
+
 
     public int calculateSize() {
         // Calculate the size of the record including metadata
