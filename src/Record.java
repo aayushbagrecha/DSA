@@ -35,17 +35,18 @@
  * cost, coordinates, description, keywords, size, and deletion status.
  */
 public class Record {
-    /**
-     * fields of the record class which will be accessed
-     */
-    public int id;
-    public String title;
-    public String date;
-    public int length, cost;
-    public short x, y;
-    public String description, keywords;
-    public int size;
-    public boolean deleted;
+
+    private int id;
+    private String title;
+    private String date;
+    private int length;
+    private int cost;
+    private short x;
+    private short y;
+    private String description;
+    private String keywords;
+    private int size;
+    private boolean deleted;
 
     /**
      * The code you provided is a constructor for the `Record` class. A
@@ -62,6 +63,7 @@ public class Record {
         int cost,
         String description,
         String keywords) {
+
         this.id = id;
         this.title = title;
         this.date = date;
@@ -84,5 +86,121 @@ public class Record {
      */
     public int calculateSize() {
         return title.length() + description.length() + keywords.length();
+    }
+
+
+    /**
+     * The function returns the value of the id variable.
+     * 
+     * @return The method is returning the value of the variable "id".
+     */
+    public int getId() {
+        return id;
+    }
+
+
+    /**
+     * The getTitle() function returns the title of an object.
+     * 
+     * @return The method is returning the value of the variable "title".
+     */
+    public String getTitle() {
+        return title;
+    }
+
+
+    /**
+     * The function returns the date as a string.
+     * 
+     * @return The method is returning a String value.
+     */
+    public String getDate() {
+        return date;
+    }
+
+
+    /**
+     * The function returns the length of something.
+     * 
+     * @return The method is returning the value of the variable "length".
+     */
+    public int getLength() {
+        return length;
+    }
+
+
+    /**
+     * The function getX() returns the value of the variable x, which is of type
+     * short.
+     * 
+     * @return The method is returning the value of the variable "x" as a short
+     *         data type.
+     */
+    public short getX() {
+        return x;
+    }
+
+
+    /**
+     * The function returns the value of the variable "y" as a short data type.
+     * 
+     * @return The method is returning the value of the variable "y", which is
+     *         of type short.
+     */
+    public short getY() {
+        return y;
+    }
+
+
+    /**
+     * The function returns the cost value.
+     * 
+     * @return The method is returning the value of the variable "cost".
+     */
+    public int getCost() {
+        return cost;
+    }
+
+
+    /**
+     * The getDescription() function returns the description of an object.
+     * 
+     * @return The method is returning a String value.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+
+    /**
+     * The function "getKeywords" returns a string containing keywords.
+     * 
+     * @return The method is returning a String value.
+     */
+    public String getKeywords() {
+        return keywords;
+    }
+
+
+    /**
+     * The function returns the deleted status.
+     * 
+     * @return The method is returning the value of the variable "deleted".
+     */
+    public boolean getDeletedStatus() {
+        return deleted;
+    }
+
+
+    /**
+     * The function sets the deleted status of an object.
+     * 
+     * @param deleted
+     *            The "deleted" parameter is a boolean value that indicates
+     *            whether an object or
+     *            entity has been marked as deleted or not.
+     */
+    public void setDeletedStatus(boolean deleted) {
+        this.deleted = deleted;
     }
 }

@@ -84,7 +84,7 @@ public class HashTable {
      *         into the table.
      */
     public boolean insert(Record record) {
-        if (search(record.id, false) != null) {
+        if (search(record.getId(), false) != null) {
             // Record with the same id already exists
             return false;
         }
@@ -92,7 +92,7 @@ public class HashTable {
         if (size >= table.length * LOAD_FACTOR_THRESHOLD) {
             expandTable();
         }
-        int index = findIndex(record.id);
+        int index = findIndex(record.getId());
         table[index] = record;
         size++;
         return true;
@@ -122,8 +122,8 @@ public class HashTable {
     public Record search(int id, boolean searchMode) {
 
         int index = findIndex(id);
-        if (table[index] != null && table[index].id == id
-            && !table[index].deleted) {
+        if (table[index] != null && table[index].getId() == id && !table[index]
+            .getDeletedStatus()) {
             return table[index];
         }
         if (searchMode == true)
@@ -146,9 +146,11 @@ public class HashTable {
      */
     public boolean delete(int id) {
         int index = findIndex(id);
-        if (table[index] != null && table[index].id == id) {
-            table[index].deleted = true; // Mark the record as deleted with a
-                                         // tombstone
+        if (table[index] != null && table[index].getId() == id) {
+            table[index].setDeletedStatus(true);
+            ; // Mark the record as
+              // deleted with a
+              // tombstone
             size--;
             return true;
         }
@@ -164,7 +166,7 @@ public class HashTable {
         writer.println("Hash table expanded to " + table.length + " records");
 
         for (Record record : oldTable) {
-            if (record != null && !record.deleted) {
+            if (record != null && !record.getDeletedStatus()) {
                 insert(record); // Reinsert non-deleted records
             }
         }
@@ -175,7 +177,7 @@ public class HashTable {
         int index = id % table.length; // 10 % 4
         int step = (((id / table.length) % (table.length / 2)) * 2) + 1;
 
-        while (table[index] != null && table[index].id != id) {
+        while (table[index] != null && table[index].getId() != id) {
             index = (index + step) % table.length; // 4 % 4 = 0, 2 % 4
             // index = (((Id / table.length) % (table.length / 2)) * 2) + 1;
         }
@@ -195,11 +197,11 @@ public class HashTable {
         for (int i = 0; i < table.length; i++) {
             Record record = table[i];
             if (record != null) {
-                if (record.deleted) {
+                if (record.getDeletedStatus()) {
                     writer.println((i + ": TOMBSTONE"));
                 }
                 else {
-                    writer.println((i + ": " + record.id));
+                    writer.println((i + ": " + record.getId()));
                     count++;
                 }
             }

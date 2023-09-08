@@ -47,13 +47,13 @@ public class Main {
      * filename, and then calls the beginParsing function with those arguments.
      */
     public static void main(String[] args) {
-        int memoryPoolSize = Integer.parseInt(args[0]);
-        int initialCapacity = Integer.parseInt(args[1]);
-        String filename = args[2];// Pass the function a full filepath
+        // int memoryPoolSize = Integer.parseInt(args[0]);
+        // int initialCapacity = Integer.parseInt(args[1]);
+        // String filename = args[2];// Pass the function a full filepath
 
-        // String filename = "input.txt";
-        // int memoryPoolSize = 64;
-        // int initialCapacity = 4;
+        String filename = "input.txt";
+        int memoryPoolSize = 64;
+        int initialCapacity = 4;
 
         beginParsing(filename, memoryPoolSize, initialCapacity); // call the
                                                                  // parsing
@@ -120,7 +120,7 @@ public class Main {
                         if (inserted == true) {
                             writer.println(
                                 "Successfully inserted record with ID " + id);
-                            writer.println("ID:" + id + ", Title: " + title);
+                            writer.println("ID: " + id + ", Title: " + title);
                             writer.println("Date: " + date + ", Length: "
                                 + length + ", X: " + x + ", Y: " + y
                                 + ", Cost: " + cost);
@@ -139,16 +139,17 @@ public class Main {
                         id = Integer.parseInt(cmd.split(" ")[1]);
                         record = ht.search(id, true);
                         if (record != null) {
-                            writer.println("Found record with ID " + record.id
-                                + ":");
-                            writer.println("ID:" + record.id + ", Title: "
-                                + record.title);
-                            writer.println("Date: " + record.date + ", Length: "
-                                + record.length + ", X: " + record.x + ", Y: "
-                                + record.y + ", Cost: " + record.cost);
-                            writer.println("Description: "
-                                + record.description);
-                            writer.println("Keywords: " + record.keywords);
+                            writer.println("Found record with ID " + record
+                                .getId() + ":");
+                            writer.println("ID:" + record.getId() + ", Title: "
+                                + record.getTitle());
+                            writer.println("Date: " + record.getDate()
+                                + ", Length: " + record.getLength() + ", X: "
+                                + record.getX() + ", Y: " + record.getY()
+                                + ", Cost: " + record.getCost());
+                            writer.println("Description: " + record
+                                .getDescription());
+                            writer.println("Keywords: " + record.getKeywords());
                         }
                         break;
                     case "delete":// Found a delete command
