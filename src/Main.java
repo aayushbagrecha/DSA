@@ -1,7 +1,7 @@
-
-/**
- * {Project Description Here}
- */
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 /**
  * The class containing the main method.
@@ -30,12 +30,6 @@
  * @author Yash Shrikant
  * @version 1.0
  */
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.Scanner;
-
 public class Main {
     /**
      * The main function takes command line arguments for memory pool size,
