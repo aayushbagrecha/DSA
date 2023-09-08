@@ -173,3 +173,12 @@ public class Main {
         }
     }
 }
+/*
+ * - code refactoring and documentation
+ * - mutation testing
+ * - Junit testing
+ * - implement handle class in records.java
+ * - implement memory manager
+ * - print out sizes after each insert command
+ * - implement freesize block
+ */
