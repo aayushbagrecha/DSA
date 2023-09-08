@@ -180,12 +180,20 @@ public class Main {
 /*
  * - mutation testing
  * - Junit testing
- * -- inserting (true and false)
- * -- deleted (true and false)
- * -- search (search for invalid record)
- * -- print (print the entire table when its: empty, half full and full)
  * - implement handle class in records.java
  * - implement memory manager
  * - print out sizes after each insert command
  * - implement freesize block
+ */
+
+// TESTS
+/*
+ * whether the command line arguements are being taken
+ * whether all cases of insert, search, print and delete are being taken from
+ * the input file
+ * getting date, title, description, cost and keywords from the record
+ * expanding the table
+ * whether or not the output is going to file for search
+ * finding index of given number
+ * testing if tombstone is coming
  */
