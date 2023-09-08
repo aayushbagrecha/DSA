@@ -37,6 +37,8 @@ print blocks
 
 delete    2
 
+delete 2
+
 search 2
 
 print hashtable

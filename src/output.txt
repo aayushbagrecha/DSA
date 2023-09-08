@@ -32,6 +32,7 @@ HashTable:
 5: 10
 total records: 4
 Record with ID 2 successfully deleted from the database
+Delete FAILED -- There is no record with ID 2
 Search FAILED -- There is no record with ID 2
 HashTable:
 1: 1

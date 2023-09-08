@@ -122,7 +122,8 @@ public class HashTable {
      */
     public boolean delete(int id) {
         int index = findIndex(id);
-        if (table[index] != null && table[index].getId() == id) {
+        if (table[index] != null && table[index].getId() == id && !table[index]
+            .isDeleted()) {
             table[index].setDeleted(true); // Mark the record as deleted with a
                                            // tombstone
             size--;
@@ -184,13 +185,13 @@ public class HashTable {
      * Prints the freeblocks of the hash table
      */
     public void printMemoryBlocks() {
-        writer.println("FreeBlock List:");
-        for (int block : freeBlocks) {
-            if (block == -1)
-                continue;
-            else
-                writer.println(block + " ");
-        }
-        writer.println("There are no freeblocks in the memory pool");
+        // writer.println("FreeBlock List:");
+        // for (int block : freeBlocks) {
+        // if (block == -1)
+        // continue;
+        // else
+        // writer.println(block + " ");
+        // }
+        // writer.println("There are no freeblocks in the memory pool");
     }
 }

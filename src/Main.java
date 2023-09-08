@@ -176,6 +176,10 @@ public class Main {
 /*
  * - mutation testing
  * - Junit testing
+ * -- inserting (true and false)
+ * -- deleted (true and false)
+ * -- search (search for invalid record)
+ * -- print (print the entire table when its: empty, half full and full)
  * - implement handle class in records.java
  * - implement memory manager
  * - print out sizes after each insert command
