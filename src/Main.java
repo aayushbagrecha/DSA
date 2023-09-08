@@ -41,9 +41,13 @@ public class Main {
      *            and filename.
      */
     public static void main(String[] args) {
-        String filename = "input.txt";
-        int memoryPoolSize = 64;
-        int initialCapacity = 4;
+        // String filename = "input.txt";
+        // int memoryPoolSize = 64;
+        // int initialCapacity = 4;
+
+        int memoryPoolSize = Integer.parseInt(args[0]);
+        int initialCapacity = Integer.parseInt(args[1]);
+        String filename = args[2];
 
         beginParsing(filename, memoryPoolSize, initialCapacity);
     }
@@ -157,7 +161,7 @@ public class Main {
                             ht.printMemoryBlocks();
                         }
                         else {
-                            ht.printHashTable();
+                            writer.print(ht.printHashTable());
                         }
                         break;
 

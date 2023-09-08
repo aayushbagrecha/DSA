@@ -18,11 +18,10 @@ public class HashTableTest {
 
     @Before
     public void setUp() {
-        PrintWriter writer = null;
-        try {
 
+        try {
             String outputFile = "output.txt";
-            writer = new PrintWriter(new FileWriter(outputFile));
+            PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
 
             ht = new HashTable(64, 16, writer);
 
@@ -30,16 +29,12 @@ public class HashTableTest {
                 (short)20, 100, "Description 1", "Keyword1, Keyword2");
             record2 = new Record(2, "Seminar 2", "2111021300", 45, (short)15,
                 (short)25, 75, "Description 2", "Keyword3, Keyword4");
-            
+
         }
         catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if (writer != null) {
-                writer.close();
-            }
         }
-        
+
     }
 
 
@@ -92,37 +87,14 @@ public class HashTableTest {
     @Test
     public void testPrintHashTable() {
 
-// ht.printHashTable();
-//
-// // Add assertions for the captured output
-// String expectedOutput = "HashTable:\n0: 1\n1: 2\ntotal records: 2\n";
-// assertEquals(expectedOutput, sw.toString());
-
         setUp();
         ht.insert(record1);
         ht.insert(record2);
 
-        ht.printHashTable();
-        String fileName = "output.txt"; // Replace with your file path
+        String output = ht.printHashTable();
 
-        String content = null;
+        String expectedOutput = "HashTable:\n1: 1\n2: 2\ntotal records: 2";
+        assertEquals(expectedOutput, output);
 
-        try {
-            // Read the file contents into a string
-            content = Files.readString(Paths.get(fileName),
-                StandardCharsets.UTF_8);
-
-            // Print the content to the console
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        String expectedOutput = "HashTable:\n" + // 
-            "1: 1\n" + //
-            "2: 2";
-        System.out.println(expectedOutput);
-        System.out.println(content);
-        assertEquals(expectedOutput, content);
     }
 }

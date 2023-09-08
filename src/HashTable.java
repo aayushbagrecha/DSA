@@ -160,24 +160,36 @@ public class HashTable {
 
 
     /**
-     * Prints the contents of the hash table, including the index and ID of
+     * The function prints the contents of a hash table, including the index,
+     * record ID, and total
+     * number of records.
+     * 
+     * @return The method is returning a string representation of the hash
+     *         table, including the index
+     *         and ID of each record in the table, as well as the total number
+     *         of records.
      */
-    public void printHashTable() {
-        writer.println("HashTable:");
+    public String printHashTable() {
+
+        String output = "HashTable:\n";
         int count = 0;
         for (int i = 0; i < table.length; i++) {
             Record record = table[i];
             if (record != null) {
                 if (record.isDeleted()) {
-                    writer.println((i + ": TOMBSTONE"));
+                    output += i + ": TOMBSTONE\n";
                 }
                 else {
-                    writer.println((i + ": " + record.getId()));
+                    output += i + ": " + record.getId() + "\n";
                     count++;
                 }
             }
         }
-        writer.println("total records: " + count);
+
+        output += "total records: " + count;
+
+        return output;
+
     }
 
 
