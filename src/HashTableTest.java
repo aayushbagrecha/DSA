@@ -1,16 +1,11 @@
 import student.TestCase;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.PrintWriter;
-import java.io.StringWriter; // Add this import
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
-public class HashTableTest {
+public class HashTableTest extends TestCase {
 
     private HashTable ht;
     private Record record1;
