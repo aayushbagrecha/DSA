@@ -1,38 +1,11 @@
 /**
- * {Project Description Here}
- */
-
-/**
- * The class containing the main method.
+ * The `Record` class represents a record with various properties such as ID,
+ * title, date, length, cost, coordinates, description, keywords, size, and
+ * deletion status.
  *
  * @author Aayush Bagrecha
  * @author Yash Shrikant
  * @version 1.0
- */
-
-// On my honor:
-// - I have not used source code obtained from another current or
-// former student, or any other unauthorized source, either
-// modified or unmodified.
-//
-// - All source code and documentation used in my program is
-// either my original work, or was derived by me from the
-// source code published in the textbook for this course.
-//
-// - I have not discussed coding details about this project with
-// anyone other than my partner (in the case of a joint
-// submission), instructor, ACM/UPE tutors or the TAs assigned
-// to this course. I understand that I may discuss the concepts
-// of this program with other students, and that another student
-// may help me debug my program so long as neither of us writes
-// anything during the discussion or modifies any computer file
-// during the discussion. I have violated neither the spirit nor
-// letter of this restriction.
-
-/**
- * The `Record` class represents a record with various properties such as ID,
- * title, date, length,
- * cost, coordinates, description, keywords, size, and deletion status.
  */
 public class Record {
 
@@ -49,9 +22,26 @@ public class Record {
     private boolean deleted;
 
     /**
-     * The code you provided is a constructor for the `Record` class. A
-     * constructor is a special method
-     * that is used to initialize the object of a class.
+     * Constructs a new `Record` object with the specified properties.
+     *
+     * @param id
+     *            The unique identifier (ID) of the record.
+     * @param title
+     *            The title of the record.
+     * @param date
+     *            The date associated with the record.
+     * @param length
+     *            The length of the record.
+     * @param x
+     *            The X-coordinate of the record.
+     * @param y
+     *            The Y-coordinate of the record.
+     * @param cost
+     *            The cost associated with the record.
+     * @param description
+     *            The description of the record.
+     * @param keywords
+     *            The keywords associated with the record.
      */
     public Record(
         int id,
@@ -79,9 +69,9 @@ public class Record {
 
 
     /**
-     * The function calculates the total size of the Title, Description, and
-     * Keywords strings.
-     * 
+     * Calculates the total size of the Title, Description, and Keywords
+     * strings.
+     *
      * @return The sum of the lengths of the Title, Description, and Keywords.
      */
     public int calculateSize() {
@@ -90,9 +80,9 @@ public class Record {
 
 
     /**
-     * The function returns the value of the id variable.
-     * 
-     * @return The method is returning the value of the variable "id".
+     * Returns the unique identifier (ID) of the record.
+     *
+     * @return The ID of the record.
      */
     public int getId() {
         return id;
@@ -100,9 +90,9 @@ public class Record {
 
 
     /**
-     * The getTitle() function returns the title of an object.
-     * 
-     * @return The method is returning the value of the variable "title".
+     * Returns the title of the record.
+     *
+     * @return The title of the record.
      */
     public String getTitle() {
         return title;
@@ -110,9 +100,9 @@ public class Record {
 
 
     /**
-     * The function returns the date as a string.
-     * 
-     * @return The method is returning a String value.
+     * Returns the date associated with the record.
+     *
+     * @return The date of the record.
      */
     public String getDate() {
         return date;
@@ -120,9 +110,9 @@ public class Record {
 
 
     /**
-     * The function returns the length of something.
-     * 
-     * @return The method is returning the value of the variable "length".
+     * Returns the length of the record.
+     *
+     * @return The length of the record.
      */
     public int getLength() {
         return length;
@@ -130,11 +120,9 @@ public class Record {
 
 
     /**
-     * The function getX() returns the value of the variable x, which is of type
-     * short.
-     * 
-     * @return The method is returning the value of the variable "x" as a short
-     *         data type.
+     * Returns the X-coordinate of the record.
+     *
+     * @return The X-coordinate of the record.
      */
     public short getX() {
         return x;
@@ -142,10 +130,9 @@ public class Record {
 
 
     /**
-     * The function returns the value of the variable "y" as a short data type.
-     * 
-     * @return The method is returning the value of the variable "y", which is
-     *         of type short.
+     * Returns the Y-coordinate of the record.
+     *
+     * @return The Y-coordinate of the record.
      */
     public short getY() {
         return y;
@@ -153,9 +140,9 @@ public class Record {
 
 
     /**
-     * The function returns the cost value.
-     * 
-     * @return The method is returning the value of the variable "cost".
+     * Returns the cost associated with the record.
+     *
+     * @return The cost of the record.
      */
     public int getCost() {
         return cost;
@@ -163,9 +150,9 @@ public class Record {
 
 
     /**
-     * The getDescription() function returns the description of an object.
-     * 
-     * @return The method is returning a String value.
+     * Returns the description of the record.
+     *
+     * @return The description of the record.
      */
     public String getDescription() {
         return description;
@@ -173,9 +160,9 @@ public class Record {
 
 
     /**
-     * The function "getKeywords" returns a string containing keywords.
-     * 
-     * @return The method is returning a String value.
+     * Returns the keywords associated with the record.
+     *
+     * @return The keywords of the record.
      */
     public String getKeywords() {
         return keywords;
@@ -183,24 +170,22 @@ public class Record {
 
 
     /**
-     * The function returns the deleted status.
-     * 
-     * @return The method is returning the value of the variable "deleted".
+     * Returns the deletion status of the record.
+     *
+     * @return `true` if the record is marked as deleted, `false` otherwise.
      */
-    public boolean getDeletedStatus() {
+    public boolean isDeleted() {
         return deleted;
     }
 
 
     /**
-     * The function sets the deleted status of an object.
-     * 
+     * Sets the deletion status of the record.
+     *
      * @param deleted
-     *            The "deleted" parameter is a boolean value that indicates
-     *            whether an object or
-     *            entity has been marked as deleted or not.
+     *            `true` to mark the record as deleted, `false` otherwise.
      */
-    public void setDeletedStatus(boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 }

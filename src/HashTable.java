@@ -1,43 +1,31 @@
-/**
- * {Project Description Here}
- */
+import java.io.PrintWriter;
 
 /**
- * The class containing the main method.
+ * The `HashTable` class represents a data structure that allows for efficient
+ * insertion, deletion, and searching of records based on their ID.
+ *
+ * On my honor:
+ * - I have not used source code obtained from another current or
+ * former student, or any other unauthorized source, either
+ * modified or unmodified.
+ * - All source code and documentation used in my program is
+ * either my original work, or was derived by me from the
+ * source code published in the textbook for this course.
+ * - I have not discussed coding details about this project with
+ * anyone other than my partner (in the case of a joint
+ * submission), instructor, ACM/UPE tutors, or the TAs assigned
+ * to this course. I understand that I may discuss the concepts
+ * of this program with other students, and that another student
+ * may help me debug my program so long as neither of us writes
+ * anything during the discussion or modifies any computer file
+ * during the discussion. I have violated neither the spirit nor
+ * letter of this restriction.
  *
  * @author Aayush Bagrecha
  * @author Yash Shrikant
  * @version 1.0
  */
-
-// On my honor:
-// - I have not used source code obtained from another current or
-// former student, or any other unauthorized source, either
-// modified or unmodified.
-//
-// - All source code and documentation used in my program is
-// either my original work, or was derived by me from the
-// source code published in the textbook for this course.
-//
-// - I have not discussed coding details about this project with
-// anyone other than my partner (in the case of a joint
-// submission), instructor, ACM/UPE tutors or the TAs assigned
-// to this course. I understand that I may discuss the concepts
-// of this program with other students, and that another student
-// may help me debug my program so long as neither of us writes
-// anything during the discussion or modifies any computer file
-// during the discussion. I have violated neither the spirit nor
-// letter of this restriction.
-
-import java.io.PrintWriter;
-
 public class HashTable {
-    /**
-     * The HashTable class is a data structure that allows for efficient
-     * insertion,
-     * deletion, and searching
-     * of records based on their ID.
-     */
 
     private static final double LOAD_FACTOR_THRESHOLD = 0.5;
 
@@ -47,10 +35,17 @@ public class HashTable {
     private int[] freeBlocks;
     private PrintWriter writer;
 
-    // The code snippet is the constructor of the HashTable class. It
-    // initializes the HashTable object
-    // with the specified memory pool size, initial capacity, and PrintWriter
-    // object.
+    /**
+     * Constructs a new `HashTable` object with the specified memory pool size,
+     * initial capacity, and PrintWriter object.
+     *
+     * @param memoryPoolSize
+     *            The size of the memory pool in bytes.
+     * @param initialCapacity
+     *            The initial capacity of the hash table.
+     * @param writer
+     *            The PrintWriter object used for output.
+     */
     public HashTable(
         int memoryPoolSize,
         int initialCapacity,
@@ -69,19 +64,13 @@ public class HashTable {
 
 
     /**
-     * The function inserts a record into a table if it doesn't already exist
-     * and expands the table if
-     * it reaches a load factor threshold.
-     * 
+     * Inserts a record into the table if it doesn't already exist and expands
+     * the table if it reaches a load factor threshold.
+     *
      * @param record
-     *            The "record" parameter is an object of type "Record" that
-     *            represents the record to
-     *            be inserted into the table.
-     * @return The method is returning a boolean value. If the record with the
-     *         same Id already exists
-     *         in the table, it will return false. Otherwise, it will return
-     *         true after inserting the record
-     *         into the table.
+     *            The record to be inserted into the table.
+     * @return `true` if the record is inserted successfully, `false` if a
+     *         record with the same ID already exists.
      */
     public boolean insert(Record record) {
         if (search(record.getId(), false) != null) {
@@ -100,57 +89,42 @@ public class HashTable {
 
 
     /**
-     * The search function returns a record with a given ID if it exists in the
-     * table, otherwise it
-     * prints a message and returns null.
-     * 
-     * @param Id
-     *            The Id parameter is an integer that represents the unique
-     *            identifier of the record
-     *            being searched for.
+     * Searches for a record with a given ID in the table.
+     *
+     * @param id
+     *            The ID of the record to search for.
      * @param searchMode
-     *            The searchMode parameter is a boolean value that determines
-     *            whether or not to
-     *            print a message if the search fails. If searchMode is true, a
-     *            message will be printed. If
-     *            searchMode is false, no message will be printed.
-     * @return The method is returning a Record object if a record with the
-     *         specified ID is found and
-     *         is not marked as deleted. If no record is found or if the
-     *         searchMode is true, it returns null.
+     *            `true` to print a message if the search fails,
+     *            `false` otherwise.
+     * @return The found record if not deleted, `null` if not found or marked
+     *         as deleted.
      */
     public Record search(int id, boolean searchMode) {
-
         int index = findIndex(id);
         if (table[index] != null && table[index].getId() == id && !table[index]
-            .getDeletedStatus()) {
+            .isDeleted()) {
             return table[index];
         }
-        if (searchMode == true)
+        if (searchMode == true) {
             writer.println("Search FAILED -- There is no record with ID " + id);
+        }
         return null;
     }
 
 
     /**
-     * The function deletes a record with a given Id from a table by marking it
-     * as deleted.
-     * 
-     * @param Id
-     *            The "Id" parameter is an integer that represents the unique
-     *            identifier of the record
-     *            that needs to be deleted from the table.
-     * @return The method is returning a boolean value. It returns true if the
-     *         record with the given Id
-     *         is found and successfully marked as deleted, and false otherwise.
+     * Deletes a record with a given ID by marking it as deleted.
+     *
+     * @param id
+     *            The ID of the record to be deleted.
+     * @return `true` if the record is found and successfully marked as deleted,
+     *         `false` otherwise.
      */
     public boolean delete(int id) {
         int index = findIndex(id);
         if (table[index] != null && table[index].getId() == id) {
-            table[index].setDeletedStatus(true);
-            ; // Mark the record as
-              // deleted with a
-              // tombstone
+            table[index].setDeleted(true); // Mark the record as deleted with a
+                                           // tombstone
             size--;
             return true;
         }
@@ -166,7 +140,7 @@ public class HashTable {
         writer.println("Hash table expanded to " + table.length + " records");
 
         for (Record record : oldTable) {
-            if (record != null && !record.getDeletedStatus()) {
+            if (record != null && !record.isDeleted()) {
                 insert(record); // Reinsert non-deleted records
             }
         }
@@ -174,30 +148,26 @@ public class HashTable {
 
 
     private int findIndex(int id) {
-        int index = id % table.length; // 10 % 4
+        int index = id % table.length;
         int step = (((id / table.length) % (table.length / 2)) * 2) + 1;
 
         while (table[index] != null && table[index].getId() != id) {
-            index = (index + step) % table.length; // 4 % 4 = 0, 2 % 4
-            // index = (((Id / table.length) % (table.length / 2)) * 2) + 1;
+            index = (index + step) % table.length;
         }
         return index;
     }
 
 
     /**
-     * The function prints the contents of a hash table, including the index and
-     * ID of each record, as
-     * well as the total number of records.
+     * Prints the contents of the hash table, including the index and ID of
      */
     public void printHashTable() {
-
         writer.println("HashTable:");
         int count = 0;
         for (int i = 0; i < table.length; i++) {
             Record record = table[i];
             if (record != null) {
-                if (record.getDeletedStatus()) {
+                if (record.isDeleted()) {
                     writer.println((i + ": TOMBSTONE"));
                 }
                 else {
@@ -206,26 +176,21 @@ public class HashTable {
                 }
             }
         }
-
         writer.println("total records: " + count);
-
     }
 
 
+    /**
+     * Prints the freeblocks of the hash table
+     */
     public void printMemoryBlocks() {
-        /**
-         * The function is commented out and does not perform any action.
-         */
-        // writer.println("FreeBlock List:");
-
-        // for (int block : freeBlocks) {
-
-        // if (block == -1)
-        // continue;
-        // else
-        // writer.println(block + " ");
-        // }
-
-        // writer.println("There are no freeblocks in the memory pool");
+        writer.println("FreeBlock List:");
+        for (int block : freeBlocks) {
+            if (block == -1)
+                continue;
+            else
+                writer.println(block + " ");
+        }
+        writer.println("There are no freeblocks in the memory pool");
     }
 }

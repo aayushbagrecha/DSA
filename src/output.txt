@@ -21,7 +21,7 @@ Date: 0703301125, Length: 35, X: 0, Y: 0, Cost: 25
 Description: Learn what kind of research is done on HPC and CSE at VT
 Keywords: HPC, CSE, computer_science
 Found record with ID 3:
-ID:3, Title: Computing Systems Research at VT
+ID: 3, Title: Computing Systems Research at VT
 Date: 0701250830, Length: 30, X: 30, Y: 10, Cost: 17
 Description: Seminar about the Computing systems research at VT
 Keywords: high_performance_computing, grids, VT, computer, science
