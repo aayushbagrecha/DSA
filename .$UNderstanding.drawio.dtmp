@@ -1,0 +1,37 @@
+<mxfile host="Electron" modified="2023-09-12T22:08:39.325Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="E6iy52ycH_0z4wxZZly9" version="21.6.8" type="device">
+  <diagram name="Page-1" id="Snzm567QDi40DAV0R77o">
+    <mxGraphModel dx="726" dy="1002" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QJR90B0WelPMJKC-1JVC-2" value="memory pool" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="990" y="124.5" width="233" height="234" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-3" value="records" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1057" y="152" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="QJR90B0WelPMJKC-1JVC-6" target="QJR90B0WelPMJKC-1JVC-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-6" value="main (command line)" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="494" y="-57" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-8" value="hash table (list of handles)" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="642" y="139" width="188" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-10" value="handles" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="675.9966666666667" y="155.99666666666673" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="QJR90B0WelPMJKC-1JVC-14" target="QJR90B0WelPMJKC-1JVC-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="QJR90B0WelPMJKC-1JVC-14" target="QJR90B0WelPMJKC-1JVC-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-14" value="MemManager&lt;br&gt;(manages both hash tables and memory pool)" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="855.0023076923076" y="-56.99846153846155" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

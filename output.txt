@@ -1,0 +1,6 @@
+HashTable:
+1: 1
+2: 2
+total records: 2
+HashTable:1:12:2total records: 2
+HashTable:1: 12: 2total records: 2

@@ -1,4 +1,6 @@
-import java.io.PrintWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 /**
  * The `HashTable` class represents a data structure that allows for efficient
@@ -33,7 +35,6 @@ public class HashTable {
     private int size;
     private int memoryPoolSize;
     private int[] freeBlocks;
-    private PrintWriter writer;
 
     /**
      * Constructs a new `HashTable` object with the specified memory pool size,
@@ -43,13 +44,8 @@ public class HashTable {
      *            The size of the memory pool in bytes.
      * @param initialCapacity
      *            The initial capacity of the hash table.
-     * @param writer
-     *            The PrintWriter object used for output.
      */
-    public HashTable(
-        int memoryPoolSize,
-        int initialCapacity,
-        PrintWriter writer) {
+    public HashTable(int memoryPoolSize, int initialCapacity) {
         table = new Record[initialCapacity];
         size = 0;
         this.memoryPoolSize = memoryPoolSize;
@@ -59,7 +55,15 @@ public class HashTable {
             freeBlocks[i] = -1;
         }
 
-        this.writer = writer;
+        File file = new File("output.txt");
+        PrintStream stream;
+        try {
+            stream = new PrintStream(file);
+            System.setOut(stream);
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -73,7 +77,7 @@ public class HashTable {
      *         record with the same ID already exists.
      */
     public boolean insert(Record record) {
-        if (search(record.getId(), false) != null) {
+        if (search(record.getId()) != null) {
             // Record with the same id already exists
             return false;
         }
@@ -89,6 +93,16 @@ public class HashTable {
 
 
     /**
+     * The function returns an array of Record objects.
+     * 
+     * @return An array of type Record is being returned.
+     */
+    public Record[] getTable() {
+        return table;
+    }
+
+
+    /**
      * Searches for a record with a given ID in the table.
      *
      * @param id
@@ -99,14 +113,11 @@ public class HashTable {
      * @return The found record if not deleted, `null` if not found or marked
      *         as deleted.
      */
-    public Record search(int id, boolean searchMode) {
+    public Record search(int id) {
         int index = findIndex(id);
         if (table[index] != null && table[index].getId() == id && !table[index]
             .isDeleted()) {
             return table[index];
-        }
-        if (searchMode == true) {
-            writer.println("Search FAILED -- There is no record with ID " + id);
         }
         return null;
     }
@@ -138,7 +149,8 @@ public class HashTable {
         table = new Record[2 * oldTable.length];
         size = 0;
 
-        writer.println("Hash table expanded to " + table.length + " records");
+        System.out.println("Hash table expanded to " + table.length
+            + " records");
 
         for (Record record : oldTable) {
             if (record != null && !record.isDeleted()) {
@@ -169,41 +181,24 @@ public class HashTable {
      *         and ID of each record in the table, as well as the total number
      *         of records.
      */
-    public String printHashTable() {
-
-        String output = "HashTable:\n";
+    public void printHashTable() {
+        // // return table;
+        System.out.println("HashTable:");
         int count = 0;
         for (int i = 0; i < table.length; i++) {
-            Record record = table[i];
+            Record record = table[i]; // this is to prevent duplicate use of
+            // table[i]
             if (record != null) {
                 if (record.isDeleted()) {
-                    output += i + ": TOMBSTONE\n";
+                    System.out.println(i + ": TOMBSTONE");
                 }
                 else {
-                    output += i + ": " + record.getId() + "\n";
+                    System.out.println(i + ": " + record.getId());
                     count++;
                 }
             }
         }
 
-        output += "total records: " + count;
-
-        return output;
-
-    }
-
-
-    /**
-     * Prints the freeblocks of the hash table
-     */
-    public void printMemoryBlocks() {
-        // writer.println("FreeBlock List:");
-        // for (int block : freeBlocks) {
-        // if (block == -1)
-        // continue;
-        // else
-        // writer.println(block + " ");
-        // }
-        // writer.println("There are no freeblocks in the memory pool");
+        System.out.println("total records: " + count);
     }
 }

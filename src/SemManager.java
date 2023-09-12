@@ -1,6 +1,6 @@
 import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
@@ -30,7 +30,7 @@ import java.util.Scanner;
  * @author Yash Shrikant
  * @version 1.0
  */
-public class Main {
+public class SemManager {
     /**
      * The main function takes command line arguments for memory pool size,
      * initial capacity, and filename, and then calls the beginParsing function
@@ -39,15 +39,16 @@ public class Main {
      * @param args
      *            Command line arguments: memory pool size, initial capacity,
      *            and filename.
+     * @throws FileNotFoundException
      */
     public static void main(String[] args) {
-        // String filename = "input.txt";
-        // int memoryPoolSize = 64;
-        // int initialCapacity = 4;
+        String filename = "input.txt";
+        int memoryPoolSize = 64;
+        int initialCapacity = 4;
 
-        int memoryPoolSize = Integer.parseInt(args[0]);
-        int initialCapacity = Integer.parseInt(args[1]);
-        String filename = args[2];
+        // int memoryPoolSize = Integer.parseInt(args[0]);
+        // int initialCapacity = Integer.parseInt(args[1]);
+        // String filename = args[2];
 
         beginParsing(filename, memoryPoolSize, initialCapacity);
     }
@@ -71,10 +72,12 @@ public class Main {
         int memoryPoolSize,
         int initialCapacity) {
         try {
-            String outputFile = "output.txt";
-            PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
-            HashTable ht = new HashTable(memoryPoolSize, initialCapacity,
-                writer);
+
+            File file = new File("./output.txt");
+            PrintStream stream = new PrintStream(file);
+            System.setOut(stream);
+
+            HashTable ht = new HashTable(memoryPoolSize, initialCapacity);
             Scanner lines = new Scanner(new File(filename));
 
             while (lines.hasNext()) {
@@ -101,17 +104,18 @@ public class Main {
                         boolean inserted = ht.insert(record);
 
                         if (inserted) {
-                            writer.println(
+                            System.out.println(
                                 "Successfully inserted record with ID " + id);
-                            writer.println("ID: " + id + ", Title: " + title);
-                            writer.println("Date: " + date + ", Length: "
+                            System.out.println("ID: " + id + ", Title: "
+                                + title);
+                            System.out.println("Date: " + date + ", Length: "
                                 + length + ", X: " + x + ", Y: " + y
                                 + ", Cost: " + cost);
-                            writer.println("Description: " + description);
-                            writer.println("Keywords: " + keywords);
+                            System.out.println("Description: " + description);
+                            System.out.println("Keywords: " + keywords);
                         }
                         else {
-                            writer.println(
+                            System.out.println(
                                 "Insert FAILED - There is already a record "
                                     + "with ID " + id);
                         }
@@ -119,23 +123,28 @@ public class Main {
 
                     case "search":
                         id = Integer.parseInt(cmd.split(" ")[1]);
-                        Record searchedRecord = ht.search(id, true);
+                        Record searchedRecord = ht.search(id);
 
                         if (searchedRecord != null) {
-                            writer.println("Found record with ID "
+                            System.out.println("Found record with ID "
                                 + searchedRecord.getId() + ":");
-                            writer.println("ID: " + searchedRecord.getId()
+                            System.out.println("ID: " + searchedRecord.getId()
                                 + ", Title: " + searchedRecord.getTitle());
-                            writer.println("Date: " + searchedRecord.getDate()
-                                + ", Length: " + searchedRecord.getLength()
-                                + ", X: " + searchedRecord.getX() + ", Y: "
-                                + searchedRecord.getY() + ", Cost: "
+                            System.out.println("Date: " + searchedRecord
+                                .getDate() + ", Length: " + searchedRecord
+                                    .getLength() + ", X: " + searchedRecord
+                                        .getX() + ", Y: " + searchedRecord
+                                            .getY() + ", Cost: "
                                 + searchedRecord.getCost());
-                            writer.println("Description: " + searchedRecord
+                            System.out.println("Description: " + searchedRecord
                                 .getDescription());
-                            writer.println("Keywords: " + searchedRecord
+                            System.out.println("Keywords: " + searchedRecord
                                 .getKeywords());
                         }
+                        else
+                            System.out.println(
+                                "Search FAILED -- There is no record with ID "
+                                    + id);
                         break;
 
                     case "delete":
@@ -143,11 +152,11 @@ public class Main {
                         boolean deletedStatus = ht.delete(id);
 
                         if (deletedStatus) {
-                            writer.println("Record with ID " + id
+                            System.out.println("Record with ID " + id
                                 + " successfully deleted from the database");
                         }
                         else {
-                            writer.println(
+                            System.out.println(
                                 "Delete FAILED -- There is no record with ID "
                                     + id);
                         }
@@ -158,10 +167,10 @@ public class Main {
                             "\\s+", " ").trim();
 
                         if (printCondition.equals("blocks")) {
-                            ht.printMemoryBlocks();
+                            // ht.printMemoryBlocks();
                         }
                         else {
-                            writer.print(ht.printHashTable());
+                            ht.printHashTable();
                         }
                         break;
 
@@ -169,8 +178,6 @@ public class Main {
                         break;
                 }
             }
-
-            writer.close();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -178,12 +185,17 @@ public class Main {
     }
 }
 /*
+ * - implement handle class
+ * - implement memoryPool class
+ * - modify hashTable (in the context of handles and memoryPool)
+ * - implement memoryManager (handles both hashtables and memory Pool)
+ * -- implement freesize block
+ * -- print out sizes after each insert command
+ * - modify seminarManager with memManager
  * - mutation testing
  * - Junit testing
- * - implement handle class in records.java
- * - implement memory manager
- * - print out sizes after each insert command
- * - implement freesize block
+ * - change the code for searching in main.java to return output and write it
+ * from there instead of writing it to file from hashtable itself
  */
 
 // TESTS

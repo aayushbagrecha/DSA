@@ -7,5 +7,7 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="student.jar"/>
+	<classpathentry kind="lib" path="src/student.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/F23P1starter"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
