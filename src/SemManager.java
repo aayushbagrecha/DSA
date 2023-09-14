@@ -1,211 +1,163 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * The class containing the main method.
- *
- * This class reads commands from a file, performs operations on a hash table
- * based on the commands, and writes the results to an output file.
- *
- * On my honor:
- * - I have not used source code obtained from another current or
- * former student, or any other unauthorized source, either
- * modified or unmodified.
- * - All source code and documentation used in my program is
- * either my original work, or was derived by me from the
- * source code published in the textbook for this course.
- * - I have not discussed coding details about this project with
- * anyone other than my partner (in the case of a joint
- * submission), instructor, ACM/UPE tutors, or the TAs assigned
- * to this course. I understand that I may discuss the concepts
- * of this program with other students, and that another student
- * may help me debug my program so long as neither of us writes
- * anything during the discussion or modifies any computer file
- * during the discussion. I have violated neither the spirit nor
- * letter of this restriction.
- *
- * @author Aayush Bagrecha
- * @author Yash Shrikant
- * @version 1.0
- */
 public class SemManager {
-    /**
-     * The main function takes command line arguments for memory pool size,
-     * initial capacity, and filename, and then calls the beginParsing function
-     * with those arguments.
-     *
-     * @param args
-     *            Command line arguments: memory pool size, initial capacity,
-     *            and filename.
-     * @throws FileNotFoundException
-     */
-    public static void main(String[] args) {
-        String filename = "input.txt";
-        int memoryPoolSize = 64;
-        int initialCapacity = 4;
+    private MemManager memoryManager;
+    private HashTable hashTable;
 
-        // int memoryPoolSize = Integer.parseInt(args[0]);
-        // int initialCapacity = Integer.parseInt(args[1]);
-        // String filename = args[2];
-
-        beginParsing(filename, memoryPoolSize, initialCapacity);
+    public SemManager(int initialMemorySize, int initialHashSize) {
+        memoryManager = new MemManager(initialMemorySize);
+        hashTable = new HashTable(initialHashSize);
     }
 
 
-    /**
-     * The beginParsing function reads commands from a file, performs operations
-     * on a hash table
-     * based on the commands, and writes the results to an output file.
-     *
-     * @param filename
-     *            The name of the file that contains the commands to be parsed.
-     * @param memoryPoolSize
-     *            The size of the memory pool that will be used by the HashTable
-     *            object.
-     * @param initialCapacity
-     *            The initial size of the hash table.
-     */
-    public static void beginParsing(
-        String filename,
-        int memoryPoolSize,
-        int initialCapacity) {
-        try {
+    public static void main(String[] args) {
+        // if (args.length != 3) {
+        // System.err.println(
+        // "Usage: java SemManager {initial-memory-size} {initial-hash-size}
+        // {command-file}");
+        // System.exit(1);
+        // }
 
-            File file = new File("./output.txt");
-            PrintStream stream = new PrintStream(file);
-            System.setOut(stream);
+        // int initialMemorySize = Integer.parseInt(args[0]);
+        // int initialHashSize = Integer.parseInt(args[1]);
+        // String commandFile = args[2];
 
-            HashTable ht = new HashTable(memoryPoolSize, initialCapacity);
-            Scanner lines = new Scanner(new File(filename));
+        int initialMemorySize = 64;
+        int initialHashSize = 4;
+        String commandFile = "input.txt";
 
-            while (lines.hasNext()) {
-                String cmd = lines.nextLine().replaceAll("\\s+", " ").trim();
-                String verb = cmd.split("\\s")[0];
+        SemManager semManager = new SemManager(initialMemorySize,
+            initialHashSize);
+        semManager.processCommands(commandFile);
+    }
 
-                switch (verb) {
-                    case "insert":
-                        int id = Integer.parseInt(cmd.split(" ")[1]);
-                        String title = lines.nextLine();
-                        String dateField = lines.nextLine().replaceAll("\\s+",
-                            " ").trim();
-                        String date = dateField.split(" ")[0];
-                        int length = Integer.parseInt(dateField.split(" ")[1]);
-                        short x = Short.parseShort(dateField.split(" ")[2]);
-                        short y = Short.parseShort(dateField.split(" ")[3]);
-                        int cost = Integer.parseInt(dateField.split(" ")[4]);
-                        String keywords = lines.nextLine().replaceAll("\\s+",
-                            " ").trim().replaceAll(" ", ", ");
-                        String description = lines.nextLine().replaceAll("\\s+",
-                            " ").trim();
-                        Record record = new Record(id, title, date, length, x,
-                            y, cost, description, keywords);
-                        boolean inserted = ht.insert(record);
 
-                        if (inserted) {
-                            System.out.println(
-                                "Successfully inserted record with ID " + id);
-                            System.out.println("ID: " + id + ", Title: "
-                                + title);
-                            System.out.println("Date: " + date + ", Length: "
-                                + length + ", X: " + x + ", Y: " + y
-                                + ", Cost: " + cost);
-                            System.out.println("Description: " + description);
-                            System.out.println("Keywords: " + keywords);
-                        }
-                        else {
-                            System.out.println(
-                                "Insert FAILED - There is already a record "
-                                    + "with ID " + id);
-                        }
-                        break;
+    private void processCommands(String commandFile) {
+        try (Scanner scanner = new Scanner(new File(commandFile))) {
+            while (scanner.hasNextLine()) {
+                String command = scanner.nextLine().trim().replaceAll("\\s+",
+                    " ");
 
-                    case "search":
-                        id = Integer.parseInt(cmd.split(" ")[1]);
-                        Record searchedRecord = ht.search(id);
+                // ArrayList<String> verbs = new ArrayList<>();
 
-                        if (searchedRecord != null) {
-                            System.out.println("Found record with ID "
-                                + searchedRecord.getId() + ":");
-                            System.out.println("ID: " + searchedRecord.getId()
-                                + ", Title: " + searchedRecord.getTitle());
-                            System.out.println("Date: " + searchedRecord
-                                .getDate() + ", Length: " + searchedRecord
-                                    .getLength() + ", X: " + searchedRecord
-                                        .getX() + ", Y: " + searchedRecord
-                                            .getY() + ", Cost: "
-                                + searchedRecord.getCost());
-                            System.out.println("Description: " + searchedRecord
-                                .getDescription());
-                            System.out.println("Keywords: " + searchedRecord
-                                .getKeywords());
-                        }
-                        else
-                            System.out.println(
-                                "Search FAILED -- There is no record with ID "
-                                    + id);
-                        break;
+                // // Add some verbs to the ArrayList
+                // verbs.add("insert");
+                // verbs.add("delete");
+                // verbs.add("search");
+                // int id = -1;
 
-                    case "delete":
-                        id = Integer.parseInt(cmd.split(" ")[1]);
-                        boolean deletedStatus = ht.delete(id);
+                // if (verbs.contains(command.split("\\s")[0])) {
+                // id = Integer.parseInt(command.split("\\s")[1]);
+                // }
 
-                        if (deletedStatus) {
-                            System.out.println("Record with ID " + id
-                                + " successfully deleted from the database");
-                        }
-                        else {
-                            System.out.println(
-                                "Delete FAILED -- There is no record with ID "
-                                    + id);
-                        }
-                        break;
+                // System.out.println(command);
 
-                    case "print":
-                        String printCondition = cmd.split(" ")[1].replaceAll(
-                            "\\s+", " ").trim();
-
-                        if (printCondition.equals("blocks")) {
-                            // ht.printMemoryBlocks();
-                        }
-                        else {
-                            ht.printHashTable();
-                        }
-                        break;
-
-                    default:
-                        break;
+                if (command.startsWith("insert")) {
+                    int id = Integer.parseInt(command.split("\\s")[1]);
+                    processInsertCommand(scanner, id);
+                }
+                else if (command.startsWith("delete")) {
+                    int id = Integer.parseInt(command.split("\\s")[1]);
+                    processDeleteCommand(scanner, id);
+                }
+                else if (command.startsWith("search")) {
+                    int id = Integer.parseInt(command.split("\\s")[1]);
+                    processSearchCommand(scanner, id);
+                }
+                else if (command.startsWith("print hashtable")) {
+                    hashTable.printHashTable();
+                }
+                else if (command.startsWith("print blocks")) {
+                    memoryManager.dump();
+                }
+                else {
+                    // System.out.println("command not found");
                 }
             }
         }
-        catch (Exception e) {
+        catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-}
-/*
- * - implement handle class
- * - implement memoryPool class
- * - modify hashTable (in the context of handles and memoryPool)
- * - implement memoryManager (handles both hashtables and memory Pool)
- * -- implement freesize block
- * -- print out sizes after each insert command
- * - modify seminarManager with memManager
- * - mutation testing
- * - Junit testing
- * - change the code for searching in main.java to return output and write it
- * from there instead of writing it to file from hashtable itself
- */
 
-// TESTS
-/*
- * whether the command line arguements are being taken
- * whether all cases of insert, search, print and delete are being taken from
- * the input file
- * getting date, title, description, cost and keywords from the record
- * expanding the table
- * whether or not the output is going to file for search
- * finding index of given number
- * testing if tombstone is coming
- */
+
+    private void processInsertCommand(Scanner scanner, int id) {
+        String title = scanner.nextLine().trim();
+        String dateLine = scanner.nextLine().trim().replaceAll("\\s+", " ");
+        String dateTime = dateLine.split("\s")[0];
+        int length = Integer.parseInt(dateLine.split("\s")[1]);
+        short x = Short.parseShort(dateLine.split("\s")[2]);
+        short y = Short.parseShort(dateLine.split("\s")[3]);
+        int cost = Short.parseShort(dateLine.split("\s")[4]);
+        String[] keywords = scanner.nextLine().trim().replaceAll("\\s+", " ")
+            .split(" ");
+        String description = scanner.nextLine().trim().replaceAll("\\s+", " ");
+
+        // Convert keywords to ArrayList
+        ArrayList<String> keywordList = new ArrayList<>();
+        for (String keyword : keywords) {
+            keywordList.add(keyword);
+        }
+
+        // Create a SeminarRecord
+        SeminarRecord seminarRecord = new SeminarRecord(id, title, dateTime,
+            length, x, y, cost, description, keywords);
+
+        // Serialize the SeminarRecord and insert it into memory
+        byte[] serializedRecord = seminarRecord.serialize();
+        Handle handle = memoryManager.insert(serializedRecord,
+            serializedRecord.length);
+
+        // // Insert the handle into the hash table
+        boolean insertStatus = hashTable.insert(id, handle);
+        if (insertStatus) {
+            System.out.println("Successfully inserted record with ID " + id);
+            // System.out.println(seminarRecord.toString());
+            // System.out.println(hashTable.getSize());
+        }
+        else
+            System.out.println(
+                "Insert FAILED - There is already a record with ID " + id);
+
+    }
+
+
+    private void processDeleteCommand(Scanner scanner, int id) {
+
+        // Check if the key exists in the hash table
+        Handle handle = hashTable.search(id);
+        if (handle != null) {
+            // Remove the record from the memory manager
+            memoryManager.remove(handle);
+
+            // Delete the entry from the hash table
+            hashTable.delete(id);
+
+            System.out.println("Record with ID " + id + " deleted");
+        }
+        else {
+            System.out.println("Record with ID " + id + " not found");
+        }
+    }
+
+
+    private void processSearchCommand(Scanner scanner, int id) {
+
+        // Search for the record in the hash table
+        Handle handle = hashTable.search(id);
+        if (handle != null) {
+            byte[] serializedRecord = new byte[handle.getRecordLength()];
+            memoryManager.get(serializedRecord, handle,
+                serializedRecord.length);
+            SeminarRecord seminarRecord = SeminarRecord.deserialize(
+                serializedRecord);
+            System.out.println(seminarRecord.toString());
+        }
+        else {
+            System.out.println("Search FAILED -- There is no record with ID "
+                + id);
+        }
+    }
+}

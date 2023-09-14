@@ -1,0 +1,6 @@
+- FIXME rectify search
+- FIXME rectify the hashing and double hashing function
+- FIXME rectify delete
+- FIXME rectify print
+- FIXME rectify printing hash table
+- FIXME rectify printing free blocks

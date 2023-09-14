@@ -1,70 +1,75 @@
 public class MemManager {
-    private HashTable hashTable;
-    private MemoryPool memoryManager;
+    private byte[] memoryPool;
+    private int poolSize;
+    private int freeBlockStart;
+    private int freeBlockSize;
 
-    public MemManager(int initialMemoryPoolSize, int initialHashTableSize) {
-        hashTable = new HashTable(initialMemoryPoolSize, initialHashTableSize);
-        memoryManager = new MemoryPool(initialMemoryPoolSize);
+    public MemManager(int initialSize) {
+        memoryPool = new byte[initialSize];
+        poolSize = initialSize;
+        freeBlockStart = 0;
+        freeBlockSize = initialSize;
     }
 
 
-    public boolean insert(
-        int id,
-        String title,
-        String date,
-        int length,
-        short x,
-        short y,
-        int cost,
-        String description,
-        String keywords) {
-        int memoryHandle = memoryManager.allocateMemory(calculateRecordSize(
-            title, description));
-        if (memoryHandle != -1) {
-            Record record = new Record(id, title, date, length, x, y, cost,
-                description, keywords);
-            hashTable.insert(id, memoryHandle);
-            // Serialize and store the record in memory at the allocated
-            // location
-            return true; // Insertion successful
+    public Handle insert(byte[] data, int length) {
+        if (length > freeBlockSize) {
+            expandMemoryPool(length);
         }
-        return false; // Insertion failed
+
+        Handle handle = new Handle(freeBlockStart, length);
+        System.arraycopy(data, 0, memoryPool, freeBlockStart, length);
+        freeBlockStart += length;
+        freeBlockSize -= length;
+
+        return handle;
     }
 
 
-    public Record search(int id) {
-        int memoryHandle = hashTable.search(id);
-        if (memoryHandle != -1) {
-            // Deserialize and retrieve the record from memory
-            return getRecordFromMemory(memoryHandle);
+    public void get(byte[] output, Handle handle, int length) {
+        if (handle != null && handle.getRecordLength() == length) {
+            System.arraycopy(memoryPool, handle.getStartingPosition(), output,
+                0, length);
         }
-        return null; // Record not found
     }
 
 
-    public boolean delete(int id) {
-        int memoryHandle = hashTable.search(id);
-        if (memoryHandle != -1) {
-            // Deallocate the memory block associated with the record
-            memoryManager.deallocateMemory(memoryHandle);
-            hashTable.delete(id);
-            return true; // Deletion successful
+    public void remove(Handle handle) {
+        if (handle != null) {
+            int blockIndex = handle.getStartingPosition();
+            int recordLength = handle.getRecordLength();
+
+            // Fill the memory block with zeros to "delete" the record
+            for (int i = blockIndex; i < blockIndex + recordLength; i++) {
+                memoryPool[i] = 0;
+            }
+
+            // Update free block information
+            freeBlockStart = Math.min(freeBlockStart, blockIndex);
+            freeBlockSize += recordLength;
         }
-        return false; // Deletion failed (record not found)
     }
 
 
-    // Helper method to calculate the size of a seminar record
-    private int calculateRecordSize(String title, String description) {
-        // Implement your calculation logic here based on title and description
-        return title.length() + description.length(); // Simplified example
+    private void expandMemoryPool(int blockSize) {
+        int newSize = Math.max(poolSize * 2, poolSize + blockSize);
+        // int newSize = poolSize;
+
+        // while (newSize < blockSize) {
+        // newSize = 2 * newSize;
+        System.out.println("Memory pool expanded to " + newSize + " bytes");
+
+        byte[] newMemoryPool = new byte[newSize];
+        System.arraycopy(memoryPool, 0, newMemoryPool, 0, poolSize);
+        memoryPool = newMemoryPool;
+        poolSize = newSize;
     }
 
 
-    // Helper method to deserialize and retrieve a record from memory
-    private Record getRecordFromMemory(int memoryHandle) {
-        // Implement deserialization logic to read the record from memory
-        // Deserialize based on the memoryHandle and return the SeminarRecord
-        return null; // Placeholder for deserialization logic
+    public void dump() {
+        System.out.println("Memory Pool Dump:");
+        System.out.println("Pool Size: " + memoryPool.length);
+        System.out.println("Free Block Start: " + freeBlockStart);
+        System.out.println("Free Block Size: " + freeBlockSize);
     }
 }

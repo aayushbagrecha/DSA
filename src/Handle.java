@@ -1,29 +1,31 @@
 public class Handle {
-    private int startPosition;
-    private int length;
+    private int startingPosition;
+    private int recordLength;
 
-    public Handle(int startPosition, int length) {
-        this.startPosition = startPosition;
-        this.length = length;
+    public Handle(int startingPosition, int recordLength) {
+        this.startingPosition = startingPosition;
+        this.recordLength = recordLength;
+    }
+
+    // Getters and setters for handle attributes
+
+
+    public int getStartingPosition() {
+        return startingPosition;
     }
 
 
-    public int getStartPosition() {
-        return startPosition;
+    public void setStartingPosition(int startingPosition) {
+        this.startingPosition = startingPosition;
     }
 
 
-    public void setStartPosition(int startPosition) {
-        this.startPosition = startPosition;
+    public int getRecordLength() {
+        return recordLength;
     }
 
 
-    public int getLength() {
-        return length;
-    }
-
-
-    public void setLength(int length) {
-        this.length = length;
+    public void setRecordLength(int recordLength) {
+        this.recordLength = recordLength;
     }
 }

@@ -1,204 +1,148 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-
-/**
- * The `HashTable` class represents a data structure that allows for efficient
- * insertion, deletion, and searching of records based on their ID.
- *
- * On my honor:
- * - I have not used source code obtained from another current or
- * former student, or any other unauthorized source, either
- * modified or unmodified.
- * - All source code and documentation used in my program is
- * either my original work, or was derived by me from the
- * source code published in the textbook for this course.
- * - I have not discussed coding details about this project with
- * anyone other than my partner (in the case of a joint
- * submission), instructor, ACM/UPE tutors, or the TAs assigned
- * to this course. I understand that I may discuss the concepts
- * of this program with other students, and that another student
- * may help me debug my program so long as neither of us writes
- * anything during the discussion or modifies any computer file
- * during the discussion. I have violated neither the spirit nor
- * letter of this restriction.
- *
- * @author Aayush Bagrecha
- * @author Yash Shrikant
- * @version 1.0
- */
 public class HashTable {
-
-    private static final double LOAD_FACTOR_THRESHOLD = 0.5;
-
-    private Record[] table;
+    private Entry[] table;
+    private int capacity;
     private int size;
-    private int memoryPoolSize;
-    private int[] freeBlocks;
+    private static final double loadFactor = 0.5;
 
-    /**
-     * Constructs a new `HashTable` object with the specified memory pool size,
-     * initial capacity, and PrintWriter object.
-     *
-     * @param memoryPoolSize
-     *            The size of the memory pool in bytes.
-     * @param initialCapacity
-     *            The initial capacity of the hash table.
-     */
-    public HashTable(int memoryPoolSize, int initialCapacity) {
-        table = new Record[initialCapacity];
+    public HashTable(int initialCapacity) {
+        capacity = initialCapacity;
         size = 0;
-        this.memoryPoolSize = memoryPoolSize;
-        freeBlocks = new int[memoryPoolSize];
-
-        for (int i = 0; i < memoryPoolSize; i++) {
-            freeBlocks[i] = -1;
-        }
-
-        File file = new File("output.txt");
-        PrintStream stream;
-        try {
-            stream = new PrintStream(file);
-            System.setOut(stream);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        table = new Entry[capacity];
     }
 
 
-    /**
-     * Inserts a record into the table if it doesn't already exist and expands
-     * the table if it reaches a load factor threshold.
-     *
-     * @param record
-     *            The record to be inserted into the table.
-     * @return `true` if the record is inserted successfully, `false` if a
-     *         record with the same ID already exists.
-     */
-    public boolean insert(Record record) {
-        if (search(record.getId()) != null) {
-            // Record with the same id already exists
-            return false;
+    public boolean insert(int key, Handle value) {
+        if (size >= table.length * loadFactor) {
+            // Resize the table if load factor is exceeded
+            resize();
         }
 
-        if (size >= table.length * LOAD_FACTOR_THRESHOLD) {
-            expandTable();
-        }
-        int index = findIndex(record.getId());
-        table[index] = record;
-        size++;
-        return true;
-    }
+        int index = find(key); // find whether the element already exists or not
+                               // return -1 if it doesnt
+                               // return actual index if it does
 
-
-    /**
-     * The function returns an array of Record objects.
-     * 
-     * @return An array of type Record is being returned.
-     */
-    public Record[] getTable() {
-        return table;
-    }
-
-
-    /**
-     * Searches for a record with a given ID in the table.
-     *
-     * @param id
-     *            The ID of the record to search for.
-     * @param searchMode
-     *            `true` to print a message if the search fails,
-     *            `false` otherwise.
-     * @return The found record if not deleted, `null` if not found or marked
-     *         as deleted.
-     */
-    public Record search(int id) {
-        int index = findIndex(id);
-        if (table[index] != null && table[index].getId() == id && !table[index]
-            .isDeleted()) {
-            return table[index];
-        }
-        return null;
-    }
-
-
-    /**
-     * Deletes a record with a given ID by marking it as deleted.
-     *
-     * @param id
-     *            The ID of the record to be deleted.
-     * @return `true` if the record is found and successfully marked as deleted,
-     *         `false` otherwise.
-     */
-    public boolean delete(int id) {
-        int index = findIndex(id);
-        if (table[index] != null && table[index].getId() == id && !table[index]
-            .isDeleted()) {
-            table[index].setDeleted(true); // Mark the record as deleted with a
-                                           // tombstone
-            size--;
+        if (index == -1) { // this indicates that the element is not present
+            // Insert the key-value pair
+            index = findEmptySlot(key);
+            table[index] = new Entry(key, value);
+            // System.out.println(table[index].value);
+            size++;
             return true;
         }
-        return false;
-    }
-
-
-    private void expandTable() {
-        Record[] oldTable = table;
-        table = new Record[2 * oldTable.length];
-        size = 0;
-
-        System.out.println("Hash table expanded to " + table.length
-            + " records");
-
-        for (Record record : oldTable) {
-            if (record != null && !record.isDeleted()) {
-                insert(record); // Reinsert non-deleted records
-            }
+        else { // this indicates that the element is already present in the
+               // table
+            return false;
         }
     }
 
 
-    private int findIndex(int id) {
-        int index = id % table.length;
-        int step = (((id / table.length) % (table.length / 2)) * 2) + 1;
+    public void delete(int key) {
+        int index = find(key);
 
-        while (table[index] != null && table[index].getId() != id) {
-            index = (index + step) % table.length;
+        if (index != -1) {
+            // Mark the entry as a tombstone
+            table[index].isTombstone = true;
+            size--;
+        }
+    }
+
+
+    public Handle search(int key) {
+        int index = find(key);
+
+        if (index == -1) // element is not found in the hash table
+            return null;
+        else {
+            return table[index].value;
+        }
+    }
+
+
+    public void printHashTable() {
+        System.out.println("HashTable: ");
+        for (int i = 0; i < capacity; i++) {
+            if (table[i] != null) {
+                if (table[i].isTombstone)
+                    System.out.println(i + ": TOMBSTONE");
+                else
+                    System.out.println(i + ": " + table[i].key);
+            }
+        }
+        System.out.println("Total records: " + size);
+    }
+
+
+    private int find(int key) {
+        int index = hash(key);
+
+        // check if the calc index contains any value
+        // if it is null then it is a new element which needs to be inserted
+        while (table[index] != null) {
+            // check if the element at the index is the key which we are finding
+            if (table[index].key == key && !table[index].isTombstone) {
+                return index;
+            }
+            index = (index + 1) % capacity;
+        }
+
+        return -1; // Key not found
+    }
+
+
+    public int getSize() {
+        return capacity;
+    }
+
+
+    private int findEmptySlot(int key) {
+        int index = hash(key);
+        int step = (((key / capacity) % (capacity / 2)) * 2) + 1;
+
+        while (table[index] != null && table[index].key != key
+            && !table[index].isTombstone) {
+            index = (index + step) % capacity;
         }
         return index;
     }
 
 
-    /**
-     * The function prints the contents of a hash table, including the index,
-     * record ID, and total
-     * number of records.
-     * 
-     * @return The method is returning a string representation of the hash
-     *         table, including the index
-     *         and ID of each record in the table, as well as the total number
-     *         of records.
-     */
-    public void printHashTable() {
-        // // return table;
-        System.out.println("HashTable:");
-        int count = 0;
-        for (int i = 0; i < table.length; i++) {
-            Record record = table[i]; // this is to prevent duplicate use of
-            // table[i]
-            if (record != null) {
-                if (record.isDeleted()) {
-                    System.out.println(i + ": TOMBSTONE");
+    private int hash(int key) {
+        return key % capacity;
+    }
+
+
+    private void resize() {
+        int newCapacity = capacity * 2;
+        Entry[] newTable = new Entry[newCapacity];
+
+        System.out.println("Hash table expanded to " + newCapacity
+            + " records");
+
+        for (int i = 0; i < capacity; i++) {
+            if (table[i] != null && !table[i].isTombstone) {
+                int newIndex = hash(table[i].key); // Use the hash function for
+                                                   // indexing
+                while (newTable[newIndex] != null) {
+                    newIndex = (newIndex + 1) % newCapacity;
                 }
-                else {
-                    System.out.println(i + ": " + record.getId());
-                    count++;
-                }
+                newTable[newIndex] = table[i];
             }
         }
 
-        System.out.println("total records: " + count);
+        table = newTable;
+        capacity = newCapacity;
+        // printHashTable();
+    }
+
+    private class Entry {
+        int key;
+        Handle value;
+        boolean isTombstone;
+
+        Entry(int key, Handle value) {
+            this.key = key;
+            this.value = value;
+            this.isTombstone = false;
+        }
     }
 }
