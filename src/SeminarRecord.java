@@ -117,7 +117,7 @@ public class SeminarRecord implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(id).append(", ");
+        sb.append("Id: ").append(id).append(", ");
         sb.append("Title: ").append(title).append("\n");
         sb.append("Date: ").append(dateTime).append(", ");
         sb.append("Length: ").append(length).append(", ");

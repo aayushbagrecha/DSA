@@ -74,15 +74,28 @@ public class HashTable {
 
     private int find(int key) {
         int index = hash(key);
+        int step = (((key / capacity) % (capacity / 2)) * 2) + 1; // the entire
+                                                                  // point of
+                                                                  // hash table
+                                                                  // is that you
+                                                                  // dont have
+                                                                  // to probe
+                                                                  // linearly -
+                                                                  // probe in
+                                                                  // steps of
+                                                                  // the ID
+        int initialIndex = index;
 
-        // check if the calc index contains any value
-        // if it is null then it is a new element which needs to be inserted
         while (table[index] != null) {
-            // check if the element at the index is the key which we are finding
             if (table[index].key == key && !table[index].isTombstone) {
                 return index;
             }
-            index = (index + 1) % capacity;
+            index = (index + step) % capacity;
+
+            // If we've looped back to the initial index, stop searching.
+            if (index == initialIndex) {
+                break;
+            }
         }
 
         return -1; // Key not found

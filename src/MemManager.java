@@ -81,21 +81,6 @@ public class MemManager {
         freeBlockSize = poolSize - freeBlockStart;
     }
 
-    // private void expandMemoryPool(int blockSize) {
-    // int newSize = poolSize;
-
-    // while (newSize < blockSize) {
-    // newSize *= 2;
-    // System.out.println("Memory pool expanded to " + newSize + " bytes");
-    // }
-
-    // byte[] newMemoryPool = new byte[newSize];
-    // System.arraycopy(memoryPool, 0, newMemoryPool, 0, poolSize);
-    // memoryPool = newMemoryPool;
-    // poolSize = newSize;
-    // freeBlockSize = poolSize - blockSize;
-    // }
-
 
     public void dump() {
         System.out.println("Memory Pool Dump:");

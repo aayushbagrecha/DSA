@@ -70,7 +70,7 @@ public class SemManager {
                     hashTable.printHashTable();
                 }
                 else if (command.startsWith("print blocks")) {
-                    memoryManager.dump();
+                    // memoryManager.dump();
                 }
                 else {
                     // System.out.println("command not found");
