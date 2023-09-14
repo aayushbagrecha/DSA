@@ -12,7 +12,7 @@ public class SemManager {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // if (args.length != 3) {
         // System.err.println(
         // "Usage: java SemManager {initial-memory-size} {initial-hash-size}
@@ -34,23 +34,11 @@ public class SemManager {
     }
 
 
-    private void processCommands(String commandFile) {
+    private void processCommands(String commandFile) throws Exception {
         try (Scanner scanner = new Scanner(new File(commandFile))) {
             while (scanner.hasNextLine()) {
                 String command = scanner.nextLine().trim().replaceAll("\\s+",
                     " ");
-
-                // ArrayList<String> verbs = new ArrayList<>();
-
-                // // Add some verbs to the ArrayList
-                // verbs.add("insert");
-                // verbs.add("delete");
-                // verbs.add("search");
-                // int id = -1;
-
-                // if (verbs.contains(command.split("\\s")[0])) {
-                // id = Integer.parseInt(command.split("\\s")[1]);
-                // }
 
                 // System.out.println(command);
 
@@ -70,7 +58,7 @@ public class SemManager {
                     hashTable.printHashTable();
                 }
                 else if (command.startsWith("print blocks")) {
-                    // memoryManager.dump();
+                    // memoryManager.printFreeBlocks();
                 }
                 else {
                     // System.out.println("command not found");
@@ -83,7 +71,8 @@ public class SemManager {
     }
 
 
-    private void processInsertCommand(Scanner scanner, int id) {
+    private void processInsertCommand(Scanner scanner, int id)
+        throws Exception {
         String title = scanner.nextLine().trim();
         String dateLine = scanner.nextLine().trim().replaceAll("\\s+", " ");
         String dateTime = dateLine.split("\s")[0];
@@ -120,8 +109,8 @@ public class SemManager {
         boolean insertStatus = hashTable.insert(id, handle);
         if (insertStatus) {
             System.out.println("Successfully inserted record with ID " + id);
-            // System.out.println(seminarRecord.toString());
-            // System.out.println(hashTable.getSize());
+            System.out.println(seminarRecord.toString());
+            System.out.println("Size: " + serializedRecord.length);
         }
         else
             System.out.println(
@@ -151,7 +140,8 @@ public class SemManager {
     }
 
 
-    private void processSearchCommand(Scanner scanner, int id) {
+    private void processSearchCommand(Scanner scanner, int id)
+        throws Exception {
 
         // Search for the record in the hash table
         Handle handle = hashTable.search(id);

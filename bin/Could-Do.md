@@ -1,2 +1,6 @@
 - FIXME rectify the serialization issue to match the size in the expected output
 - FIXME rectify printing free blocks
+- TODO buddy method
+- TODO linked list for freeblocks
+- TODO piazza memory manager
+- TODO how to write tests when the output is being sent to a file

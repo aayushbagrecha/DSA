@@ -20,13 +20,7 @@ public class MemManager {
         }
 
         Handle handle = new Handle(freeBlockStart, length);
-        System.arraycopy(data, 0, memoryPool, freeBlockStart, length); // puts
-                                                                       // the
-                                                                       // serialized
-                                                                       // byte
-                                                                       // array
-                                                                       // into
-                                                                       // memory
+        System.arraycopy(data, 0, memoryPool, freeBlockStart, length);
         freeBlockStart += length;
         freeBlockSize -= length;
 
@@ -88,4 +82,24 @@ public class MemManager {
         System.out.println("Free Block Start: " + freeBlockStart);
         System.out.println("Free Block Size: " + freeBlockSize);
     }
+
+
+    public void printFreeBlocks() {
+        System.out.println("Freeblock List:");
+
+        int currentBlockStart = freeBlockStart;
+        int currentBlockEnd = freeBlockStart + freeBlockSize;
+
+        while (currentBlockStart < poolSize) {
+            int blockIndex = currentBlockStart;
+            int blockSize = currentBlockEnd - currentBlockStart;
+
+            System.out.println(blockIndex + ": " + blockSize);
+
+            // Move to the next block
+            currentBlockStart = currentBlockEnd;
+            currentBlockEnd = currentBlockStart + freeBlockSize;
+        }
+    }
+
 }
