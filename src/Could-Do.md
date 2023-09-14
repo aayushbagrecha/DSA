@@ -1,6 +1,2 @@
-- FIXME rectify search
-- FIXME rectify the hashing and double hashing function
-- FIXME rectify delete
-- FIXME rectify print
-- FIXME rectify printing hash table
+- FIXME rectify the serialization issue to match the size in the expected output
 - FIXME rectify printing free blocks

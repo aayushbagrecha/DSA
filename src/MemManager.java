@@ -13,12 +13,20 @@ public class MemManager {
 
 
     public Handle insert(byte[] data, int length) {
+        // System.out.println("freeblock size is " + freeBlockSize
+        // + " and data to be inserted is of length: " + length);
         if (length > freeBlockSize) {
             expandMemoryPool(length);
         }
 
         Handle handle = new Handle(freeBlockStart, length);
-        System.arraycopy(data, 0, memoryPool, freeBlockStart, length);
+        System.arraycopy(data, 0, memoryPool, freeBlockStart, length); // puts
+                                                                       // the
+                                                                       // serialized
+                                                                       // byte
+                                                                       // array
+                                                                       // into
+                                                                       // memory
         freeBlockStart += length;
         freeBlockSize -= length;
 
@@ -52,18 +60,41 @@ public class MemManager {
 
 
     private void expandMemoryPool(int blockSize) {
-        int newSize = Math.max(poolSize * 2, poolSize + blockSize);
-        // int newSize = poolSize;
+        // Calculate the new size of the memory pool
+        int newSize = poolSize;
+        while (newSize < freeBlockStart + blockSize) {
+            newSize *= 2;
+            System.out.println("Memory pool expanded to " + newSize + " bytes");
+        }
 
-        // while (newSize < blockSize) {
-        // newSize = 2 * newSize;
-        System.out.println("Memory pool expanded to " + newSize + " bytes");
-
+        // Create a new memory pool with the expanded size
         byte[] newMemoryPool = new byte[newSize];
+
+        // Copy the existing data to the new memory pool
         System.arraycopy(memoryPool, 0, newMemoryPool, 0, poolSize);
+
+        // Update the memory pool reference and size
         memoryPool = newMemoryPool;
         poolSize = newSize;
+
+        // Update the freeBlockSize to account for the additional space
+        freeBlockSize = poolSize - freeBlockStart;
     }
+
+    // private void expandMemoryPool(int blockSize) {
+    // int newSize = poolSize;
+
+    // while (newSize < blockSize) {
+    // newSize *= 2;
+    // System.out.println("Memory pool expanded to " + newSize + " bytes");
+    // }
+
+    // byte[] newMemoryPool = new byte[newSize];
+    // System.arraycopy(memoryPool, 0, newMemoryPool, 0, poolSize);
+    // memoryPool = newMemoryPool;
+    // poolSize = newSize;
+    // freeBlockSize = poolSize - blockSize;
+    // }
 
 
     public void dump() {

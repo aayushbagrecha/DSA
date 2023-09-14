@@ -95,6 +95,12 @@ public class SemManager {
             .split(" ");
         String description = scanner.nextLine().trim().replaceAll("\\s+", " ");
 
+        if (hashTable.search(id) != null) {
+            System.out.println(
+                "Insert FAILED - There is already a record with ID " + id);
+            return;
+        }
+
         // Convert keywords to ArrayList
         ArrayList<String> keywordList = new ArrayList<>();
         for (String keyword : keywords) {
@@ -135,10 +141,12 @@ public class SemManager {
             // Delete the entry from the hash table
             hashTable.delete(id);
 
-            System.out.println("Record with ID " + id + " deleted");
+            System.out.println("Record with ID " + id
+                + " successfully deleted from database");
         }
         else {
-            System.out.println("Record with ID " + id + " not found");
+            System.out.println("Delete FAILED -- There is no record with ID "
+                + id);
         }
     }
 
@@ -148,6 +156,7 @@ public class SemManager {
         // Search for the record in the hash table
         Handle handle = hashTable.search(id);
         if (handle != null) {
+            System.out.println("Found record with ID " + id + ":");
             byte[] serializedRecord = new byte[handle.getRecordLength()];
             memoryManager.get(serializedRecord, handle,
                 serializedRecord.length);
