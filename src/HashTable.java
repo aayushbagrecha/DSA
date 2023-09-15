@@ -1,5 +1,5 @@
 public class HashTable {
-    private Entry[] table;
+    public Entry[] table;
     private int capacity;
     private int size;
     private static final double loadFactor = 0.5;
@@ -126,7 +126,7 @@ public class HashTable {
     }
 
 
-    private void resize() {
+    public void resize() {
         int newCapacity = capacity * 2;
         Entry[] newTable = new Entry[newCapacity];
 
@@ -149,7 +149,7 @@ public class HashTable {
         // printHashTable();
     }
 
-    private class Entry {
+    public class Entry {
         int key;
         Handle value;
         boolean isTombstone;
