@@ -1,6 +1,31 @@
-- FIXME rectify the serialization issue to match the size in the expected output
 - FIXME rectify printing free blocks
 - TODO buddy method
 - TODO linked list for freeblocks
 - TODO piazza memory manager
 - TODO how to write tests when the output is being sent to a file
+- print the free blocks in the position they end (so if entire 32 is free then we print 32:32)
+- unit test to check the value of 
+- use the class variables this.checkInsertion true while testing functions which dont return anything
+- implement hash table to make sure that Handle is not initialized in it
+- rehash free blocks once 
+
+## TESTS
+- insert false
+- delete false condition
+- get capacity of the hashTable
+- find function testing the break condition (searching for an element that doesnt exist)
+
+- empty table search 
+- empty table delete
+- delete true
+- delete false
+- search found
+- search not found
+- hash collision (insertion when element already exists at given position for ex: inserting 1 and 9)
+- print hashing
+- search for tombstone in hash (read console output)
+- wrap around hash (?)
+- delete all elements in the hash (all should be tombstones)
+- tombstone insert (?)
+- hash insert into tombstone
+- expand table with tombstone (hash table of size 4, and delete 2 elements, then insert another and check if deleted)

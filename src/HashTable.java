@@ -36,14 +36,16 @@ public class HashTable {
     }
 
 
-    public void delete(int key) {
+    public boolean delete(int key) {
         int index = find(key);
 
         if (index != -1) {
             // Mark the entry as a tombstone
             table[index].isTombstone = true;
             size--;
+            return true;
         }
+        return false;
     }
 
 
@@ -59,20 +61,20 @@ public class HashTable {
 
 
     public void printHashTable() {
-        System.out.println("HashTable: ");
+        String output = "HashTable:\n";
         for (int i = 0; i < capacity; i++) {
             if (table[i] != null) {
                 if (table[i].isTombstone)
-                    System.out.println(i + ": TOMBSTONE");
+                    output += i + ": TOMBSTONE\n";
                 else
-                    System.out.println(i + ": " + table[i].key);
+                    output += i + ": " + table[i].key + "\n";
             }
         }
-        System.out.println("Total records: " + size);
+        System.out.println(output + "Total records: " + size);
     }
 
 
-    private int find(int key) {
+    public int find(int key) {
         int index = hash(key);
         int step = (((key / capacity) % (capacity / 2)) * 2) + 1; // the entire
                                                                   // point of

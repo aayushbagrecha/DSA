@@ -6,8 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="student.jar"/>
-	<classpathentry kind="lib" path="src/student.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/F23P1starter"/>
+	<classpathentry kind="lib" path="/Users/yashshrikant/Documents/Courses/Intermediate DSA/student.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

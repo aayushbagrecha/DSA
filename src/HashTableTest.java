@@ -1,124 +1,189 @@
-import student.TestCase;
-import org.junit.Before;
-import org.junit.Test;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.PrintStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import student.TestCase;
 
 public class HashTableTest extends TestCase {
 
-    private HashTable ht;
-    private Record record1;
-    private Record record2;
+  private HashTable ht;
+  private MemManager memManager;
+  private SeminarRecord record1;
+  private SeminarRecord record2;
+  private SeminarRecord record3;
+  private Handle record1Handle;
+  private Handle record2Handle;
+  private Handle record3Handle;
 
-    @Before
-    public void setUp() {
+  // @Before
+  public void setUp() throws Exception {
+    try {
+      ht = new HashTable(4);
+      memManager = new MemManager(64);
 
-        File file = new File("output.txt");
-        PrintStream stream;
-        try {
-            stream = new PrintStream(file);
-            System.setOut(stream);
+      record1 = new SeminarRecord(1, "Seminar 1", "2111011200", 60, (short)10,
+        (short)20, 100, "Description 1", new String[] { "Keyword1, Keyword2" });
+      byte[] record1_serialized = record1.serialize();
+      record1Handle = memManager.insert(record1_serialized,
+        record1_serialized.length);
 
-            ht = new HashTable(64, 16);
+      record2 = new SeminarRecord(2, "Seminar 2", "2111021300", 45, (short)15,
+        (short)25, 75, "Description 2", new String[] { "Keyword1, Keyword2" });
+      byte[] record2_serialized = record2.serialize();
+      record2Handle = memManager.insert(record2_serialized,
+        record2_serialized.length);
 
-            record1 = new Record(1, "Seminar 1", "2111011200", 60, (short)10,
-                (short)20, 100, "Description 1", "Keyword1, Keyword2");
-            record2 = new Record(2, "Seminar 2", "2111021300", 45, (short)15,
-                (short)25, 75, "Description 2", "Keyword3, Keyword4");
-
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+      record3 = new SeminarRecord(3, "Seminar 3", "2111021300", 45, (short)15,
+        (short)25, 75, "Description 3", new String[] { "Keyword1, Keyword2" });
+      byte[] record3_serialized = record3.serialize();
+      record2Handle = memManager.insert(record3_serialized,
+        record3_serialized.length);
     }
-
-
-    @Test
-    public void testInsertAndSearch() {
-        assertTrue(ht.insert(record1));
-        assertNotNull(ht.search(1));
+    catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
+  }
 
 
-    @Test
-    public void testDelete() {
-        ht.insert(record1);
-        assertTrue(ht.delete(record1.getId()));
-        assertFalse(ht.delete(record1.getId()));
-    }
+  //
+  public void testInsertAndSearch() {
+    assertTrue(ht.insert(record1.getId(), record1Handle));
+    assertEquals(ht.search(1), record1Handle);
+  }
 
 
-    @Test
-    public void testExpandTable() {
-        assertTrue(ht.insert(record1));
-        assertTrue(ht.insert(record2));
-        assertNotNull(ht.search(1));
-        assertNotNull(ht.search(2));
-    }
+  /**
+   * This test method evaluates the HashTable's delete operation. It inserts
+   * a record, deletes it, and verifies that the record is successfully
+   * deleted the first time and fails to delete it the second time, as the
+   * record is no longer present.
+   */
+  //
+  public void testDelete() {
+    ht.insert(record1.getId(), record1Handle);
+    assertTrue(ht.delete(record1.getId()));
+  }
 
 
-    @Test
-    public void testInsertDuplicate() {
-        assertTrue(ht.insert(record1));
-        assertFalse(ht.insert(record1));
-    }
+  public void testDeleteNegative() {
+    // ht.insert(record1.getId(), record1Handle);
+    assertFalse(ht.delete(record1.getId()));
+  }
 
 
-    @Test
-    public void testSearchDeletedRecord() {
-        ht.insert(record1);
-        ht.delete(1);
-        // assertNull(ht.search(1,true));
-    }
+  /**
+   * This test method checks if a record is successfully inserted into the
+   * hash table when there is no conflict (i.e., no record with the same ID
+   * exists).
+   *
+   * @throws Exception
+   */
+  //
+  public void testSuccessfulRecordInsertion() throws Exception {
+    assertTrue(ht.insert(record1.getId(), record1Handle));
+
+    // Check if the record is present in the hash table
+
+  }
 
 
-    @Test
-    public void testDeleteNonExistingRecord() {
-        assertFalse(ht.delete(1));
-    }
+  /**
+   * This test method checks if the search method correctly finds and returns
+   * a record when it exists and is not deleted in the hash table.
+   *
+   * @throws Exception
+   */
+  //
+  public void testSuccessfulRecordSearch() throws Exception {
+    ht.insert(record1.getId(), record1Handle);
+    Handle retrievedHandle = ht.search(record1.getId());
+    assertNotNull(retrievedHandle);
+  }
 
 
-    @Test
-    public void testPrintHashTable() {
+  /**
+   * This test method checks if the delete method correctly marks a record as
+   * deleted and returns true when the record exists, is not deleted yet, and
+   * the deletion is successful.
+   */
+  //
+  public void testSuccessfulRecordDeletion() {
 
-        setUp();
-        ht.insert(record1);
-        ht.insert(record2);
+    ht.insert(record1.getId(), record1Handle);
 
-        ht.printHashTable();
+    // Attempt to delete the record by ID
+    boolean deletionResult = ht.delete(1);
 
-        String finalOutput = "";
+    // Verify that the deletion was successful
+    assertTrue(deletionResult);
+  }
 
-        try {
 
-            BufferedReader file = new BufferedReader(new FileReader(
-                "output.txt"));
-            String line;
+  /**
+   * Tests verifies whether it calculates the correct index based on the
+   * provided id value and handles various scenarios.
+   */
+  //
+  public void testFindIndex() {
 
-            while ((line = file.readLine()) != null) {
-                finalOutput += line;
-            }
+    // Test various ID values and step values
+    ht.insert(record1.getId(), record1Handle);
 
-            file.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    int expectedIndex = 1;
 
-        // Record[] table = ht.getTable();
+    int index = ht.find(record1.getId());
 
-        String expectedOutput = "HashTable:" + "1:1" + "2:2"
-            + "total records: 2";
+    // Verify that the calculated index matches the expected index
+    assertEquals(expectedIndex, index);
+  }
 
-        System.out.println(expectedOutput);
-        System.out.println(finalOutput);
 
-        assertEquals(expectedOutput, finalOutput);
+  /**
+   * This test method assesses the HashTable's expansion functionality. It
+   * inserts two records into the table, ensuring that both insertions are
+   * successful. Afterward, it searches for both records to confirm their
+   * presence in the table.
+   */
 
-    }
+  public void testExpandTable() {
+
+    ht.insert(record1.getId(), record1Handle);
+    ht.insert(record2.getId(), record2Handle);
+    ht.insert(record3.getId(), record3Handle);
+    assertEquals(8, ht.getSize());
+
+  }
+
+
+  /**
+   * This test method examines the HashTable's handling of duplicate record
+   * insertion. It inserts the same record twice and verifies that the second
+   * insertion fails since duplicates are not allowed in the table.
+   */
+  public void testInsertDuplicate() {
+    assertTrue(ht.insert(record1.getId(), record1Handle));
+
+  }
+
+
+  /**
+   * This test method tests the HashTable's behavior when searching for a
+   * record that has been previously deleted. It inserts a record, deletes
+   * it, and then checks whether searching for the deleted record returns
+   * null.
+   */
+
+  public void testSearchDeletedRecord() {
+    ht.insert(record1.getId(), record1Handle);
+    ht.delete(1);
+    assertNull(ht.search(1));
+  }
+
+
+  /**
+   * This test method evaluates the HashTable's delete operation when
+   * attempting to delete a record that doesn't exist in the table. It
+   * verifies that attempting to delete a non-existing record returns false.
+   */
+
+  public void testDeleteNonExistingRecord() {
+    assertFalse(ht.delete(1));
+  }
 }

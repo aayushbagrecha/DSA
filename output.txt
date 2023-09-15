@@ -1,6 +1,2 @@
-HashTable:
-1: 1
-2: 2
-total records: 2
-HashTable:1:12:2total records: 2
-HashTable:1: 12: 2total records: 2
+Memory pool expanded to 128 bytes
+Memory pool expanded to 256 bytes

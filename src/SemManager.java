@@ -75,14 +75,14 @@ public class SemManager {
         throws Exception {
         String title = scanner.nextLine().trim();
         String dateLine = scanner.nextLine().trim().replaceAll("\\s+", " ");
-        String dateTime = dateLine.split("\s")[0];
-        int length = Integer.parseInt(dateLine.split("\s")[1]);
-        short x = Short.parseShort(dateLine.split("\s")[2]);
-        short y = Short.parseShort(dateLine.split("\s")[3]);
-        int cost = Short.parseShort(dateLine.split("\s")[4]);
+        String dateTime = dateLine.split("\\s")[0];
+        int length = Integer.parseInt(dateLine.split("\\s")[1]);
+        short x = Short.parseShort(dateLine.split("\\s")[2]);
+        short y = Short.parseShort(dateLine.split("\\s")[3]);
+        int cost = Short.parseShort(dateLine.split("\\s")[4]);
         String[] keywords = scanner.nextLine().trim().replaceAll("\\s+", " ")
             .split(" ");
-        String description = scanner.nextLine().trim().replaceAll("\\s+", " ");
+        String description = scanner.nextLine().trim();
 
         if (hashTable.search(id) != null) {
             System.out.println(

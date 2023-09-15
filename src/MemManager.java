@@ -13,8 +13,6 @@ public class MemManager {
 
 
     public Handle insert(byte[] data, int length) {
-        // System.out.println("freeblock size is " + freeBlockSize
-        // + " and data to be inserted is of length: " + length);
         if (length > freeBlockSize) {
             expandMemoryPool(length);
         }
