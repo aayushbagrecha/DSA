@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2023-09-15T06:04:06.154Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="wjwIO1emw3FM1rYen0Te" version="21.6.8" type="device">
+<mxfile host="Electron" modified="2023-09-15T06:04:38.747Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="I4rv-0aLiAacfpi7d8ND" version="21.6.8" type="device">
   <diagram name="Page-1" id="Snzm567QDi40DAV0R77o">
     <mxGraphModel dx="726" dy="1002" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -249,8 +249,19 @@
         <mxCell id="QJR90B0WelPMJKC-1JVC-87" value="Insertion" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="562" y="1443" width="64" height="26" as="geometry" />
         </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QJR90B0WelPMJKC-1JVC-90" target="QJR90B0WelPMJKC-1JVC-92">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-94" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="QJR90B0WelPMJKC-1JVC-93">
+          <mxGeometry x="-0.2057" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="QJR90B0WelPMJKC-1JVC-90" value="serialized record length &amp;gt; memory pool&amp;nbsp;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1104" y="1524.15" width="119" height="115.69" as="geometry" />
+        </mxCell>
+        <mxCell id="QJR90B0WelPMJKC-1JVC-92" value="expand memory pool (64 -&amp;gt; 128)" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1104.0023076923076" y="1715.000769230769" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

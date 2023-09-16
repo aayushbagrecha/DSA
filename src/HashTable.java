@@ -61,7 +61,7 @@ public class HashTable {
 
 
     public void printHashTable() {
-        String output = "HashTable:\n";
+        String output = "Hashtable:\n";
         for (int i = 0; i < capacity; i++) {
             if (table[i] != null) {
                 if (table[i].isTombstone)
@@ -70,7 +70,7 @@ public class HashTable {
                     output += i + ": " + table[i].key + "\n";
             }
         }
-        System.out.println(output + "Total records: " + size);
+        System.out.println(output + "total records: " + size);
     }
 
 

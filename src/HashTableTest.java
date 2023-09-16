@@ -226,7 +226,7 @@ public class HashTableTest extends TestCase {
     assertEquals("Memory pool expanded to 128 bytes\n"
       + "Memory pool expanded to 256 bytes\n"
       + "Memory pool expanded to 512 bytes\n"
-      + "HashTable:\n1: 1\nTotal records: 1\n", output);
+      + "Hashtable:\n1: 1\ntotal records: 1\n", output);
   }
 
 
@@ -432,10 +432,8 @@ public class HashTableTest extends TestCase {
     // Calculate the expected size based on the lengths of title,
     // description, and keywords
     int expectedSize = 84;
-    System.out.println(expectedSize);
     // Call the calculateSize method on the Record object
     int actualSize = (record1.serialize()).length;
-    System.out.println(actualSize);
 
     // Assert that the actual size matches the expected size
     assertEquals(expectedSize, actualSize);
